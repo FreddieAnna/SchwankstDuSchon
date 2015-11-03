@@ -11,6 +11,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  * Created by Neuner on 03.11.2015.
@@ -22,11 +25,36 @@ public class Test1ScreenFiller {
 	static int pointsTestUhr = 0;
 
 	/**
-	 * Startet den Test indem fillUhr1 aufgerufen wird
+	 * Zeigt eine Erklärung zum folgenden Test an, die mit OK bestätigt werden muss
 	 * @param root
 	 */
 	public static void fillPaneWithTest1ScreenComponents(final BorderPane root) {
-		fillUhr1(root);
+		
+		Text t = new Text();
+		t.setFont(new Font(36));
+		t.setTextAlignment(TextAlignment.CENTER);
+		t.setText("Du siehst gleich eine Uhr und darunter vier verschiedene Uhrzeiten.\n"
+				+ "Wähle unter den vier Uhrzeiten die richtige auf der Uhr angezeigte aus.");
+		
+		Button buttonOK = new Button();
+		buttonOK.setText("OK");
+		buttonOK.setStyle("-fx-font: 36 arial");
+		buttonOK.setMinSize(250, 150);
+		
+		buttonOK.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				fillUhr1(root);
+			}
+		});
+		
+		HBox bottomBox = new HBox();
+		bottomBox.setSpacing(50);
+		bottomBox.setAlignment(Pos.CENTER);
+		bottomBox.getChildren().addAll(buttonOK);
+		root.getChildren().clear();
+		root.setBottom(bottomBox);
+		root.setCenter(t);
 	}
 
 	/**
