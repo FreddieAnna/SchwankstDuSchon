@@ -14,11 +14,11 @@ public class StartScreenFiller {
     public static void fillPaneWithStartScreenComponents(final BorderPane root) {
 
         Button button = new Button();
-        button.setText("to Test1");
+        button.setText("to Test2");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-              Test1ScreenFiller.fillPaneWithTest1ScreenComponents(root);
+              Test2ScreenFiller.fillPaneWithTest2ScreenComponents(root);
             }
         });
 
