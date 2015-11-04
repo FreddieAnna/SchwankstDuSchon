@@ -17,16 +17,16 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
-      <profile default="false" name="Annotation profile for psycho-test" enabled="true">
+      <profile default="false" name="Annotation profile for psycho-test-parent" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="psycho-test" />
+        <module name="psycho-test-parent" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="psycho-test" target="1.6" />
+      <module name="psycho-test-parent" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>
