@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+
 /**
  * Created by siefker on 14.09.2015.
  */
@@ -29,4 +30,6 @@ public class Main extends Application {
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }
+
+
 }
