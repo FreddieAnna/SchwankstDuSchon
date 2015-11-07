@@ -43,11 +43,12 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Test");
         BorderPane root = new BorderPane();
-        //Pane root = new Pane();
-        StartScreenFiller.fillPaneWithStartScreenComponents(root);
         primaryStage.setScene(new Scene(root));
         primaryStage.setFullScreen(true);
         primaryStage.show();
+
+        StartScreenFiller startScreenFiller = new StartScreenFiller();
+        startScreenFiller.fillPaneWithStartScreenComponents(root);
     }
 
     /*private class WebCamInfo {

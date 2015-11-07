@@ -11,14 +11,15 @@ import javafx.scene.layout.BorderPane;
 @SuppressWarnings("restriction")
 public class EndScreenFiller {
 
-    public static void fillPaneWithEndScreenComponents(final BorderPane root) {
+    public void fillPaneWithEndScreenComponents(final BorderPane root) {
 
         Button button = new Button();
         button.setText("to StartScreen");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                StartScreenFiller.fillPaneWithStartScreenComponents(root);
+                StartScreenFiller startScreenFiller = new StartScreenFiller();
+                startScreenFiller.fillPaneWithStartScreenComponents(root);
             }
         });
 

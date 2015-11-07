@@ -19,20 +19,20 @@ import javafx.util.Duration;
 @SuppressWarnings("restriction")
 public class Test2ScreenFiller {
 
-	//Punkte für diesen Test
+	//Punkte fï¿½r diesen Test
 	static int pointsTestRechnen = 0;
 
 	/**
-	 * Zeigt eine Erklärung zum folgenden Test an, die mit OK bestätigt werden muss
+	 * Zeigt eine Erklï¿½rung zum folgenden Test an, die mit OK bestï¿½tigt werden muss
 	 * @param root
 	 */
-	public static void fillPaneWithTest2ScreenComponents(final BorderPane root) {
+	public void fillPaneWithTest2ScreenComponents(final BorderPane root) {
 		
 		Text t = new Text();
 		t.setFont(new Font(36));
 		t.setTextAlignment(TextAlignment.CENTER);
 		t.setText("Du siehst gleich vier verschiedene Rechnenaufgaben mit Ergebnis.\n"
-				+ "Wähle unter den vier Aufgaben die aus, die das richtige Ergebnis hat.");
+				+ "Wï¿½hle unter den vier Aufgaben die aus, die das richtige Ergebnis hat.");
 		
 		Button buttonOK = new Button();
 		buttonOK.setText("OK");
@@ -56,12 +56,12 @@ public class Test2ScreenFiller {
 	}
 
 	/**
-	 * Platziert die Elemente für den ersten Durchlauf
+	 * Platziert die Elemente fï¿½r den ersten Durchlauf
 	 * @param root
 	 */
-	private static void fillRechnen1(final BorderPane root) {
+	private void fillRechnen1(final BorderPane root) {
 
-		//Button erstellen und Text, Textgröße und Buttongröße festlegen
+		//Button erstellen und Text, Textgrï¿½ï¿½e und Buttongrï¿½ï¿½e festlegen
 		final Button button1 = new Button();
 		button1.setText("5 + 3 = 7");
 		button1.setStyle("-fx-font: 36 arial");
@@ -82,8 +82,8 @@ public class Test2ScreenFiller {
 		button4.setStyle("-fx-font: 36 arial");
 		button4.setMinSize(250, 150);
 
-		/*Events festlegen, bei richtiger Antwort 4 wird Button 4 grün und Punkte werden hochgezählt, 
-		bei falschen Antworten wird der gedrückte Button rot und Button 4 grün*/
+		/*Events festlegen, bei richtiger Antwort 4 wird Button 4 grï¿½n und Punkte werden hochgezï¿½hlt, 
+		bei falschen Antworten wird der gedrï¿½ckte Button rot und Button 4 grï¿½n*/
 		button1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
@@ -138,12 +138,12 @@ public class Test2ScreenFiller {
 	}
 
 	/**
-	 * Platziert die Elemente für den zweiten Durchlauf
+	 * Platziert die Elemente fï¿½r den zweiten Durchlauf
 	 * @param root
 	 */
-	private static void fillRechnen2(final BorderPane root) {
+	private void fillRechnen2(final BorderPane root) {
 
-		//Button erstellen und Text, Textgröße und Buttongröße festlegen
+		//Button erstellen und Text, Textgrï¿½ï¿½e und Buttongrï¿½ï¿½e festlegen
 		final Button button1 = new Button();
 		button1.setText("6 + 4 = 10");
 		button1.setStyle("-fx-font: 36 arial");
@@ -164,14 +164,14 @@ public class Test2ScreenFiller {
 		button4.setStyle("-fx-font: 36 arial");
 		button4.setMinSize(250, 150);
 		
-		/*Events festlegen, bei richtiger Antwort 1 wird Button 1 grün und Punkte werden hochgezählt, 
-		bei falschen Antworten wird der gedrückte Button rot und Button 1 grün*/
+		/*Events festlegen, bei richtiger Antwort 1 wird Button 1 grï¿½n und Punkte werden hochgezï¿½hlt, 
+		bei falschen Antworten wird der gedrï¿½ckte Button rot und Button 1 grï¿½n*/
 		button1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				button1.setStyle("-fx-font: 36 arial; -fx-base: #74DF00");
 				pointsTestRechnen = +10;
-				//TODO nächster Test
+				//TODO nï¿½chster Test
 			}
 
 		});
@@ -181,7 +181,7 @@ public class Test2ScreenFiller {
 			public void handle(ActionEvent actionEvent) {
 				button2.setStyle("-fx-font: 36 arial; -fx-base: #DF0101");
 				button1.setStyle("-fx-font: 36 arial; -fx-base: #74DF00");
-				//TODO nächster Test
+				//TODO nï¿½chster Test
 			}
 		});
 
@@ -190,7 +190,7 @@ public class Test2ScreenFiller {
 			public void handle(ActionEvent actionEvent) {
 				button3.setStyle("-fx-font: 36 arial; -fx-base: #DF0101");
 				button1.setStyle("-fx-font: 36 arial; -fx-base: #74DF00");
-				//TODO nächster Test
+				//TODO nï¿½chster Test
 			}
 		});
 
@@ -199,7 +199,7 @@ public class Test2ScreenFiller {
 			public void handle(ActionEvent actionEvent) {
 				button4.setStyle("-fx-font: 36 arial; -fx-base: #DF0101");
 				button1.setStyle("-fx-font: 36 arial; -fx-base: #74DF00");
-				//TODO nächster Test
+				//TODO nï¿½chster Test
 			}
 		});
 
@@ -212,7 +212,7 @@ public class Test2ScreenFiller {
 		    new EventHandler<ActionEvent>() {
 		        @Override
 		        public void handle(ActionEvent event) {
-		        	//TODO nächster Test
+		        	//TODO nï¿½chster Test
 		        }
 		    }));
 		timeline.play();
@@ -227,7 +227,7 @@ public class Test2ScreenFiller {
 	 * @param button3
 	 * @param button4
 	 */
-	public static void buttonsPlatzieren(final BorderPane root, Button button1, Button button2, Button button3, Button button4){
+	public void buttonsPlatzieren(final BorderPane root, Button button1, Button button2, Button button3, Button button4){
 		root.getChildren().clear();
 		HBox bottomBox = new HBox();
 		bottomBox.setSpacing(50);

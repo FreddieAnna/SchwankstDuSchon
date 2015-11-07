@@ -11,7 +11,7 @@ import javafx.scene.layout.BorderPane;
  */
 public class WebcamTest2ScreenFiller {
 
-    public static void fillPaneWithWebcamTest2ScreenComponents(final BorderPane root) {
+    public void fillPaneWithWebcamTest2ScreenComponents(final BorderPane root) {
 
         root.getChildren().clear();
 
@@ -23,7 +23,8 @@ public class WebcamTest2ScreenFiller {
             @Override
             public void handle(ActionEvent event) {
                 UI.closeWebcam();
-                StartScreenFiller.fillPaneWithStartScreenComponents(root);
+                StartScreenFiller startScreenFiller = new StartScreenFiller();
+                startScreenFiller.fillPaneWithStartScreenComponents(root);
             }
         });
 
