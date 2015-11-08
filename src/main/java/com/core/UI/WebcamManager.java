@@ -36,6 +36,8 @@ public class WebcamManager {
         imgWebCamCapturedImage.setScaleX(-1);
 
         HBox hBox = new HBox();
+        hBox.setPrefWidth(427);
+        hBox.setMaxHeight(240);
         if (position.equals("BOTTOM_RIGHT")) {
             hBox.setAlignment(Pos.BOTTOM_RIGHT);
         }
@@ -48,7 +50,15 @@ public class WebcamManager {
         hBox.getChildren().add(webCamPane);
 
         webCamPane.setCenter(imgWebCamCapturedImage);
-        root.setBottom(hBox);
+        if (position.equals("BOTTOM_RIGHT")) {
+            root.setBottom(hBox);
+        }
+        else if (position.equals("CENTER")) {
+            root.setCenter(hBox);
+        }
+        else {
+            root.setBottom(hBox);
+        }
 
         webcam = Webcam.getDefault();
         webcam.open();

@@ -1,6 +1,7 @@
 package com.core.UI.Screens;
 
 import com.core.UI.WebcamManager;
+import com.github.sarxos.webcam.Webcam;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -15,14 +16,15 @@ public class WebcamTest2ScreenFiller {
 
         root.getChildren().clear();
 
-        WebcamManager.displayWebcam(root);
+        final WebcamManager webcamManager = new WebcamManager();
+        Webcam webcam = webcamManager.displayWebcamAtPosition(root, "CENTER");
 
         Button button = new Button();
         button.setText("To StartScreen");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                WebcamManager.closeWebcam();
+                webcamManager.closeWebcam();
                 StartScreenFiller startScreenFiller = new StartScreenFiller();
                 startScreenFiller.fillPaneWithStartScreenComponents(root);
             }

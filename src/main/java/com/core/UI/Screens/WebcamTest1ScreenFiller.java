@@ -60,10 +60,10 @@ public class WebcamTest1ScreenFiller {
 
     private void initiateCircleTest(BorderPane root) {
 
-        initiateCircle(root, 1);
-
         WebcamManager webcamManager = new WebcamManager();
         Webcam webcam = webcamManager.displayWebcamAtPosition(root, "CENTER");
+
+        initiateCircle(root, 1);
 
         long currentTime = System.currentTimeMillis();
         long end = currentTime+3000;
@@ -100,14 +100,12 @@ public class WebcamTest1ScreenFiller {
      */
 
     private void initiateCircle(final BorderPane root, int circleNumber) {
-        root.getChildren().clear();
-
         switch (circleNumber) {
 
             case 1: showCircleInCorner(root, "TOP", "LEFT"); break;
-            case 2: showCircleInCorner(root, "BOTTOM", "RIGHT"); break;
-            case 3: showCircleInCorner(root, "TOP", "RIGHT"); break;
-            case 4: showCircleInCorner(root, "BOTTOM", "LEFT"); break;
+            case 2: showCircleInCorner(root, "BOTTOM", "RIGHT"); root.getChildren().remove(1);  break;
+            case 3: showCircleInCorner(root, "TOP", "RIGHT"); root.getChildren().remove(1); break;
+            case 4: showCircleInCorner(root, "BOTTOM", "LEFT"); root.getChildren().remove(1); break;
             default: break;
         }
     }
@@ -118,7 +116,7 @@ public class WebcamTest1ScreenFiller {
 
     private void showCircleInCorner(BorderPane root, String posVertical, String posHorizontal) {
 
-        Image image = new Image("file:///C:/Users/Nutzer/Desktop/Unizeug/Software Engineering/SchwankstDuSchon/src/main/java/com/core/WebcamManager/Graphics/kreis_blau.png");
+        Image image = new Image("file:///C:/Users/siefker/Uni/Vorlesungen/3. Semester/Software Engineering/SE_Project/SchwankstDuSchon/src/main/java/com/core/UI/Graphics/kreis_blau.png");
         ImageView imageView = new ImageView();
         imageView.setImage(image);
 
