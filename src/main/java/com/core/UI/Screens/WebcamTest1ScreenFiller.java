@@ -1,27 +1,18 @@
 package com.core.UI.Screens;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import com.core.UI.WebcamManager;
+import com.github.sarxos.webcam.Webcam;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.*;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.*;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 
-import javax.swing.border.Border;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by siefker on 04.11.2015.
@@ -31,8 +22,6 @@ public class WebcamTest1ScreenFiller {
     public void fillPaneWithWebcamTest1ScreenComponents(final BorderPane root) throws IOException {
 
         root.getChildren().clear();
-
-        //UI.displayWebcam(root);
 
         Text text = new Text();
         text.setFont(new Font(36));
@@ -57,7 +46,7 @@ public class WebcamTest1ScreenFiller {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            initiateCircle(root, 1);
+                            initiateCircleTest(root);
                         }
                     });
                 } catch (InterruptedException e) {
@@ -67,13 +56,14 @@ public class WebcamTest1ScreenFiller {
         };
 
         new Thread(r).start();
-
-        //initiateCircleTest(root);
     }
 
     private void initiateCircleTest(BorderPane root) {
 
         initiateCircle(root, 1);
+
+        WebcamManager webcamManager = new WebcamManager();
+        Webcam webcam = webcamManager.displayWebcamAtPosition(root, "CENTER");
 
         long currentTime = System.currentTimeMillis();
         long end = currentTime+3000;
@@ -128,7 +118,7 @@ public class WebcamTest1ScreenFiller {
 
     private void showCircleInCorner(BorderPane root, String posVertical, String posHorizontal) {
 
-        Image image = new Image("file:///C:/Users/Nutzer/Desktop/Unizeug/Software Engineering/SchwankstDuSchon/src/main/java/com/core/UI/Graphics/kreis_blau.png");
+        Image image = new Image("file:///C:/Users/Nutzer/Desktop/Unizeug/Software Engineering/SchwankstDuSchon/src/main/java/com/core/WebcamManager/Graphics/kreis_blau.png");
         ImageView imageView = new ImageView();
         imageView.setImage(image);
 

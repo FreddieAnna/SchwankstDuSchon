@@ -17,14 +17,14 @@ import java.awt.image.BufferedImage;
 /**
  * Created by siefker on 04.11.2015.
  */
-public class UI {
+public class WebcamManager {
 
-    static Webcam webcam = null;
-    private static BufferedImage grabbedImage;
-    private static ObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
-    private static ImageView imgWebCamCapturedImage;
+    Webcam webcam = null;
+    private BufferedImage grabbedImage;
+    private ObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
+    private ImageView imgWebCamCapturedImage;
 
-    public static void displayWebcam(BorderPane root) {
+    public Webcam displayWebcamAtPosition(BorderPane root, String position) {
 
         BorderPane webCamPane = new BorderPane();
         webCamPane.setStyle("-fx-background-color: #ccc;");
@@ -36,7 +36,15 @@ public class UI {
         imgWebCamCapturedImage.setScaleX(-1);
 
         HBox hBox = new HBox();
-        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+        if (position.equals("BOTTOM_RIGHT")) {
+            hBox.setAlignment(Pos.BOTTOM_RIGHT);
+        }
+        else if (position.equals("CENTER")) {
+            hBox.setAlignment(Pos.CENTER);
+        }
+        else {
+            hBox.setAlignment(Pos.BOTTOM_RIGHT);
+        }
         hBox.getChildren().add(webCamPane);
 
         webCamPane.setCenter(imgWebCamCapturedImage);
@@ -46,14 +54,16 @@ public class UI {
         webcam.open();
 
         startWebCamStream();
+
+        return webcam;
     }
 
-    public static void closeWebcam() {
+    public void closeWebcam() {
 
-        webcam.close();
+        Webcam.getDefault().close();
     }
 
-    protected static void startWebCamStream() {
+    protected void startWebCamStream() {
 
         final boolean stopCamera;
 
@@ -92,6 +102,5 @@ public class UI {
         th.setDaemon(true);
         th.start();
         imgWebCamCapturedImage.imageProperty().bind(imageProperty);
-
     }
 }

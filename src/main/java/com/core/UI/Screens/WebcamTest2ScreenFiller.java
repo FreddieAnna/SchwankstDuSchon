@@ -1,6 +1,6 @@
 package com.core.UI.Screens;
 
-import com.core.UI.UI;
+import com.core.UI.WebcamManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -15,14 +15,14 @@ public class WebcamTest2ScreenFiller {
 
         root.getChildren().clear();
 
-        UI.displayWebcam(root);
+        WebcamManager.displayWebcam(root);
 
         Button button = new Button();
         button.setText("To StartScreen");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                UI.closeWebcam();
+                WebcamManager.closeWebcam();
                 StartScreenFiller startScreenFiller = new StartScreenFiller();
                 startScreenFiller.fillPaneWithStartScreenComponents(root);
             }
