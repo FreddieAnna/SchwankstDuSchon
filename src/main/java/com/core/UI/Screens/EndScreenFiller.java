@@ -18,8 +18,8 @@ public class EndScreenFiller {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                StartScreenFiller startScreenFiller = new StartScreenFiller();
-                startScreenFiller.fillPaneWithStartScreenComponents(root);
+                /*StartScreenFiller startScreenFiller = new StartScreenFiller();
+                startScreenFiller.fillPaneWithStartScreenComponents(root);*/
             }
         });
 

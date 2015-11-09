@@ -25,8 +25,8 @@ public class WebcamTest2ScreenFiller {
             @Override
             public void handle(ActionEvent event) {
                 webcamManager.closeWebcam();
-                StartScreenFiller startScreenFiller = new StartScreenFiller();
-                startScreenFiller.fillPaneWithStartScreenComponents(root);
+                /*StartScreenFiller startScreenFiller = new StartScreenFiller();
+                startScreenFiller.fillPaneWithStartScreenComponents(root);*/
             }
         });
 
