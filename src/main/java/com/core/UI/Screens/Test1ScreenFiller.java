@@ -37,6 +37,7 @@ public class Test1ScreenFiller {
 				+ "Wähle unter den vier Uhrzeiten die richtige auf der Uhr angezeigte aus.");
 		
 		Button buttonOK = new Button();
+		//buttonOK = createButton("OK");
 		buttonOK.setText("OK");
 		buttonOK.setStyle("-fx-font: 36 arial");
 		buttonOK.setMinSize(250, 150);
