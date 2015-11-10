@@ -30,6 +30,11 @@ public class Main extends Application {
 	BorderPane clockTestClock2 = fillPaneWithClock2();
 	BorderPane clockTestClock3 = fillPaneWithClock3();
 	
+	BorderPane explanationCalculateTest = fillPaneWithExplanationCalculateTest();
+	BorderPane calculateTestCalculate1 = fillPaneWithCalculate1();
+	BorderPane calculateTestCalculate2 = fillPaneWithCalculate2();
+
+	
 	//Punkte für den Uhrentest
 	int pointsClockTest = 0;
 
@@ -429,4 +434,183 @@ public class Main extends Application {
 
 		return clockTestClock3;
 	}
+	
+	static int pointsTestRechnen = 0;
+
+	/**
+	 * Zeigt eine Erklärung zum Rechnentest
+	 * @author Caroline Neuner
+	 * @return
+	 */
+	public BorderPane fillPaneWithExplanationCalculateTest() {
+		
+		BorderPane explanationCalculateTest = new BorderPane();
+		
+		Text t = new Text();
+		t.setFont(new Font(36));
+		t.setTextAlignment(TextAlignment.CENTER);
+		t.setText("Du siehst gleich vier verschiedene Rechnenaufgaben mit Ergebnis.\n"
+				+ "Wähle unter den vier Aufgaben die aus, die das richtige Ergebnis hat.");
+		
+		explanationCalculateTest.setCenter(t);
+		
+		return explanationCalculateTest;
+	}
+
+	/**
+	 * Platziert die Elemente für den ersten Durchlauf des Rechentests
+	 * @author Caroline Neuner
+	 * @return 
+	 */
+	private BorderPane fillPaneWithCalculate1() {
+		
+		final BorderPane calculateTestCalculate1 = new BorderPane();
+
+		//Buttons erstellen
+		final Button button1 = createButton("5 + 3 = 7");
+		final Button button2 = createButton("7 - 3 = 3");
+		final Button button3 = createButton("9 - 2 = 6");
+		final Button button4 = createButton("3 + 6 = 9");
+
+		/*Events festlegen, bei richtiger Antwort 4 wird Button 4 grün und Punkte werden hochgezählt, 
+		bei falschen Antworten wird der gedrückte Button rot und Button 4 grün*/
+		button1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				colorButtonRed(button1);
+				colorButtonGreen(button4);
+				root.getChildren().remove(calculateTestCalculate1);
+				root.setCenter(calculateTestCalculate2);
+			}
+
+		});
+
+		button2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				colorButtonRed(button2);
+				colorButtonGreen(button4);
+				root.getChildren().remove(calculateTestCalculate1);
+				root.setCenter(calculateTestCalculate2);
+			}
+		});
+
+		button3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				colorButtonRed(button3);
+				colorButtonGreen(button4);
+				root.getChildren().remove(calculateTestCalculate1);
+				root.setCenter(calculateTestCalculate2);
+			}
+		});
+
+		button4.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				colorButtonGreen(button4);
+				pointsTestRechnen = +10;
+				root.getChildren().remove(calculateTestCalculate1);
+				root.setCenter(calculateTestCalculate2);
+			}
+		});
+		
+		//Buttons auf dem Bildschirm platzieren
+		HBox bottomBox = new HBox();
+		bottomBox.setSpacing(50);
+		bottomBox.setAlignment(Pos.CENTER);
+		bottomBox.getChildren().addAll(button1, button2, button3, button4);
+		calculateTestCalculate1.setCenter(bottomBox);
+		
+		//Timer zum antworten innerhalb von 10 Sekunden festlegen
+		Timeline timeline = new Timeline();
+		timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(10),
+		    new EventHandler<ActionEvent>() {
+		        @Override
+		        public void handle(ActionEvent event) {
+		        	root.getChildren().remove(calculateTestCalculate1);
+					root.setCenter(calculateTestCalculate2);
+		        }
+		    }));
+		timeline.play();
+
+		return calculateTestCalculate1;
+	}
+
+	/**
+	 * Platziert die Elemente für den zweiten Durchlauf
+	 * @author Caroline Neuner
+	 * @return
+	 */
+	private BorderPane fillPaneWithCalculate2() {
+		
+		BorderPane calculateTestCalculate2 = new BorderPane();
+
+		//Buttons erstellen
+		final Button button1 = createButton("6 + 4 = 10");
+		final Button button2 = createButton("8 - 3 = 6");
+		final Button button3 = createButton("5 + 6 = 10");
+		final Button button4 = createButton("7 - 3 = 5");
+		
+		/*Events festlegen, bei richtiger Antwort 1 wird Button 1 grün und Punkte werden hochgezählt, 
+		bei falschen Antworten wird der gedrückte Button rot und Button 1 grün*/
+		button1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				colorButtonGreen(button1);
+				pointsTestRechnen = +10;
+				//TODO nächster Test
+			}
+
+		});
+
+		button2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				colorButtonRed(button2);
+				colorButtonGreen(button1);
+				//TODO nächster Test
+			}
+		});
+
+		button3.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				colorButtonRed(button3);
+				colorButtonGreen(button1);
+				//TODO nächster Test
+			}
+		});
+
+		button4.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				colorButtonRed(button4);
+				colorButtonGreen(button1);
+				//TODO nächster Test
+			}
+		});
+
+		//Buttons auf dem Bildschirm platzieren
+		HBox bottomBox = new HBox();
+		bottomBox.setSpacing(50);
+		bottomBox.setAlignment(Pos.CENTER);
+		bottomBox.getChildren().addAll(button1, button2, button3, button4);
+		calculateTestCalculate2.setCenter(bottomBox);
+		
+		//Timer zum antworten innerhalb von 10 Sekunden festlegen
+		Timeline timeline = new Timeline();
+		timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(10),
+		    new EventHandler<ActionEvent>() {
+		        @Override
+		        public void handle(ActionEvent event) {
+		        	//TODO nächster Test
+		        }
+		    }));
+		timeline.play();
+		
+		return calculateTestCalculate2;
+
+	}
+	
 }
