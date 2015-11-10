@@ -1,5 +1,6 @@
 package com.core;
 
+import com.core.UI.WebcamEvaluation;
 import com.core.UI.WebcamManager;
 import com.github.sarxos.webcam.Webcam;
 import javafx.application.Application;
@@ -19,7 +20,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import javax.management.relation.RoleUnresolved;
 import javax.swing.border.Border;
+import java.io.IOException;
 
 /**
  * Created by siefker on 04.11.2015.
@@ -64,13 +67,13 @@ public class Main extends Application {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(8000);
+                            Thread.sleep(3000);
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    //initiateCircleTest(root);
                                     root.getChildren().remove(webcamTestOneInformationScreen);
-                                    root.setCenter(webcamTestOneCircleOneScreen);
+                                    //root.setCenter(webcamTestOneCircleOneScreen);
+                                    initiateCircleTest();
                                 }
                             });
                         } catch (InterruptedException e) {
@@ -110,39 +113,53 @@ public class Main extends Application {
         return webcamTest1Screen;
     }
 
-    private void initiateCircleTest(BorderPane root) {
+    private void initiateCircleTest() {
 
-        WebcamManager webcamManager = new WebcamManager();
-        Webcam webcam = webcamManager.displayWebcamAtPosition(root, "CENTER");
+        root.setCenter(webcamTestOneCircleOneScreen);
 
-        //initiateCircle(root, 1);
-
-        long currentTime = System.currentTimeMillis();
-        long end = currentTime+3000;
-        boolean pickedCorrectAnswer = false;
-
-        while (currentTime < end) {
-
-            if (/* Spieler greift in richtige Ecke*/ false) {
-
-                pickedCorrectAnswer = true;
-                        /* show 'Sehr Gut!' */
-                break;
+        /*Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            root.getChildren().remove(webcamTestOneCircleOneScreen);
+                            root.setCenter(webcamTestOneCircleTwoScreen);
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+        };
 
-            else if (/* Spieler greift in falsche Ecke*/ false) {
+        new Thread(r).start();*/
 
-                        /* show 'Leider Nicht...' */
-                break;
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        WebcamEvaluation webcamEvaluation = new WebcamEvaluation();
+
+                        try {
+                            if (webcamEvaluation.compareInCorner("TOP_LEFT") == true) {
+
+                                root.getChildren().remove(webcamTestOneCircleOneScreen);
+                                root.setCenter(webcamTestOneCircleTwoScreen);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
+        };
 
-            currentTime = System.currentTimeMillis();
-        }
-
-        if (pickedCorrectAnswer = false) {
-
-                    /* show 'Zu Langsam!' */
-        }
+        new Thread(r).start();
     }
 
     /*
@@ -169,11 +186,15 @@ public class Main extends Application {
 
         BorderPane circleInCornerScreen = new BorderPane();
 
-        Image image = new Image("file:///C:/Users/siefker/Uni/Vorlesungen/3. Semester/Software Engineering/SE_Project/SchwankstDuSchon/src/main/java/com/core/UI/Graphics/kreis_blau.png");
+        WebcamManager webcamManager = new WebcamManager();
+        Webcam webcam = webcamManager.displayWebcamAtPosition(circleInCornerScreen, "CENTER");
+
+        Image image = new Image("file:src/main/java/com/core/UI/Graphics/kreis_blau.png");
         ImageView imageView = new ImageView();
         imageView.setImage(image);
 
         HBox hBox = new HBox();
+        hBox.setMaxHeight(250);
         hBox.getChildren().add(imageView);
 
         if (posHorizontal.equals("LEFT") && posVertical.equals("TOP")) {

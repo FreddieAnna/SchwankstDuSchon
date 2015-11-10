@@ -1,6 +1,7 @@
 package com.core.UI;
 
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamResolution;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -24,7 +25,9 @@ public class WebcamManager {
     private ObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
     private ImageView imgWebCamCapturedImage;
 
-    public Webcam displayWebcamAtPosition(BorderPane root, String position) {
+    public Webcam displayWebcamAtPosition(BorderPane webcamTestPane, String position) {
+
+        webcam = Webcam.getDefault();
 
         BorderPane webCamPane = new BorderPane();
         webCamPane.setStyle("-fx-background-color: #ccc;");
@@ -51,16 +54,15 @@ public class WebcamManager {
 
         webCamPane.setCenter(imgWebCamCapturedImage);
         if (position.equals("BOTTOM_RIGHT")) {
-            root.setBottom(hBox);
+            webcamTestPane.setBottom(hBox);
         }
         else if (position.equals("CENTER")) {
-            root.setCenter(hBox);
+            webcamTestPane.setCenter(hBox);
         }
         else {
-            root.setBottom(hBox);
+            webcamTestPane.setBottom(hBox);
         }
 
-        webcam = Webcam.getDefault();
         webcam.open();
 
         startWebCamStream();
