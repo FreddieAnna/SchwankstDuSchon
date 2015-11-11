@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d25d65a2-add5-40e5-98cc-b119c82f5fdb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/core/UI/WebcamEvaluation.java" afterPath="$PROJECT_DIR$/src/main/java/com/core/UI/WebcamEvaluation.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/core/UI/Pictures/1.png" afterPath="$PROJECT_DIR$/src/main/java/com/core/UI/Pictures/1.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/core/UI/Pictures/2.png" afterPath="$PROJECT_DIR$/src/main/java/com/core/UI/Pictures/2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/core/UI/WebcamEvaluation.class" afterPath="$PROJECT_DIR$/target/classes/com/core/UI/WebcamEvaluation.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SchwankstDuSchon.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,7 +32,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/core/Main.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="146" column="111" selection-start-line="146" selection-start-column="111" selection-end-line="146" selection-end-column="111" />
+              <caret line="146" column="123" selection-start-line="146" selection-start-column="123" selection-end-line="146" selection-end-column="124" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -40,7 +43,7 @@
       <file leaf-file-name="WebcamEvaluation.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/core/UI/WebcamEvaluation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.4739228">
+            <state vertical-scroll-proportion="2.3469388">
               <caret line="99" column="44" selection-start-line="99" selection-start-column="44" selection-end-line="99" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -987,7 +990,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/core/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="146" column="111" selection-start-line="146" selection-start-column="111" selection-end-line="146" selection-end-column="111" />
+          <caret line="146" column="123" selection-start-line="146" selection-start-column="123" selection-end-line="146" selection-end-column="124" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -996,7 +999,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/core/UI/WebcamEvaluation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.4739228">
+        <state vertical-scroll-proportion="2.3469388">
           <caret line="99" column="44" selection-start-line="99" selection-start-column="44" selection-end-line="99" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
