@@ -20,8 +20,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import javax.management.relation.RoleUnresolved;
-import javax.swing.border.Border;
 import java.io.IOException;
 
 /**
@@ -146,7 +144,7 @@ public class Main extends Application {
                         WebcamEvaluation webcamEvaluation = new WebcamEvaluation();
 
                         try {
-                            if (webcamEvaluation.compareInCorner("TOP_LEFT") == true) {
+                            if (webcamEvaluation.checkIfMotionDetectedForGivenTest("CIRCLE_TEST_CIRCLE_TOP_LEFT") == true) {
 
                                 root.getChildren().remove(webcamTestOneCircleOneScreen);
                                 root.setCenter(webcamTestOneCircleTwoScreen);

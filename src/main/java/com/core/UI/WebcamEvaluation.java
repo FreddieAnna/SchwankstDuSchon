@@ -13,7 +13,7 @@ import java.nio.Buffer;
  */
 public class WebcamEvaluation {
 
-    public Boolean compareInCorner(String corner) throws IOException {
+    public Boolean checkIfMotionDetectedForGivenTest(String currentTest) throws IOException {
 
         Webcam webcam = Webcam.getDefault();
         webcam.close();
@@ -36,10 +36,28 @@ public class WebcamEvaluation {
         FileInputStream fis2 = new FileInputStream(file2);
         BufferedImage image2 = ImageIO.read(fis2);
 
-        if (corner.equals("TOP_LEFT")) {
+        if (currentTest.equals("CIRCLE_TEST_CIRCLE_TOP_LEFT")) {
 
-            Boolean motionInTopLeftCornerDetected = compareTopLeftCorners(image1, image2);
+            Boolean motionInTopLeftCornerDetected = compareTopLeftCorners(image1, image2) && !compareTopRightCorners(image1, image2) && !compareBottomLeftCorners(image1, image2) && !compareBottomRightCorners(image1, image2);
             return motionInTopLeftCornerDetected;
+        }
+
+        if (currentTest.equals("CIRCLE_TEST_CIRCLE_TOP_RIGHT")) {
+
+            Boolean motionInTopRightCornerDetected = !compareTopLeftCorners(image1, image2) && compareTopRightCorners(image1, image2) && !compareBottomLeftCorners(image1, image2) && !compareBottomRightCorners(image1, image2);
+            return motionInTopRightCornerDetected;
+        }
+
+        if (currentTest.equals("CIRCLE_TEST_CIRCLE_BOTTOM_LEFT")) {
+
+            Boolean motionInBottomLeftCornerDetected = !compareTopLeftCorners(image1, image2) && !compareTopRightCorners(image1, image2) && compareBottomLeftCorners(image1, image2) && !compareBottomRightCorners(image1, image2);
+            return motionInBottomLeftCornerDetected;
+        }
+
+        if (currentTest.equals("CIRCLE_TEST_CIRCLE_BOTTOM_RIGHT")) {
+
+            Boolean motionInBottomRightCornerDetected = !compareTopLeftCorners(image1, image2) && !compareTopRightCorners(image1, image2) && !compareBottomLeftCorners(image1, image2) && compareBottomRightCorners(image1, image2);
+            return motionInBottomRightCornerDetected;
         }
 
         return false;
@@ -50,9 +68,9 @@ public class WebcamEvaluation {
         int identicalPixels = 0, differentPixels = 0;
 
         int width = 640;
-        int height = 150;
+        int height = 50;
 
-        for(int a=440;a<width;a++)
+        for(int a=width-50;a<width;a++)
         {
             for(int b=0;b<height;b++)
             {
@@ -79,13 +97,117 @@ public class WebcamEvaluation {
         float allPixels = (height*width);
         float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
 
-        if (percentageIdenticalPixels <= 99) {
+        return percentageIdenticalPixels<=99;
+    }
 
-            return true;
+    private boolean compareTopRightCorners(BufferedImage image1, BufferedImage image2) throws IOException {
+
+        int identicalPixels = 0, differentPixels = 0;
+
+        int width = 50;
+        int height = 50;
+
+        for(int a=0;a<width;a++)
+        {
+            for(int b=0;b<height;b++)
+            {
+
+                int clr1=  image1.getRGB(a,b);
+                int  red1   = (clr1 & 0x00ff0000) >> 16;
+                int  green1 = (clr1 & 0x0000ff00) >> 8;
+                int  blue1  =  clr1 & 0x000000ff;
+
+                int clr2=  image2.getRGB(a,b);
+                int  red2   = (clr2 & 0x00ff0000) >> 16;
+                int  green2 = (clr2 & 0x0000ff00) >> 8;
+                int  blue2  =  clr2 & 0x000000ff;
+
+                if(((red1 - red2) + (green1 - green2) + (blue1 - blue2))<50)
+                {
+                    identicalPixels=identicalPixels+1;
+                }
+                else
+                    differentPixels=differentPixels+1;
+            }
         }
 
-        else {
-            return false;
+        float allPixels = (height*width);
+        float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
+
+        return percentageIdenticalPixels<=99;
+    }
+
+    private boolean compareBottomLeftCorners(BufferedImage image1, BufferedImage image2) throws IOException {
+
+        int identicalPixels = 0, differentPixels = 0;
+
+        int width = 640;
+        int height = 480;
+
+        for(int a=width-50;a<width;a++)
+        {
+            for(int b=height-50;b<height;b++)
+            {
+
+                int clr1=  image1.getRGB(a,b);
+                int  red1   = (clr1 & 0x00ff0000) >> 16;
+                int  green1 = (clr1 & 0x0000ff00) >> 8;
+                int  blue1  =  clr1 & 0x000000ff;
+
+                int clr2=  image2.getRGB(a,b);
+                int  red2   = (clr2 & 0x00ff0000) >> 16;
+                int  green2 = (clr2 & 0x0000ff00) >> 8;
+                int  blue2  =  clr2 & 0x000000ff;
+
+                if(((red1 - red2) + (green1 - green2) + (blue1 - blue2))<50)
+                {
+                    identicalPixels=identicalPixels+1;
+                }
+                else
+                    differentPixels=differentPixels+1;
+            }
         }
+
+        float allPixels = (height*width);
+        float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
+
+        return percentageIdenticalPixels<=99;
+    }
+
+    private boolean compareBottomRightCorners(BufferedImage image1, BufferedImage image2) throws IOException {
+
+        int identicalPixels = 0, differentPixels = 0;
+
+        int width = 50;
+        int height = 480;
+
+        for(int a=0;a<width;a++)
+        {
+            for(int b=height-50;b<height;b++)
+            {
+
+                int clr1=  image1.getRGB(a,b);
+                int  red1   = (clr1 & 0x00ff0000) >> 16;
+                int  green1 = (clr1 & 0x0000ff00) >> 8;
+                int  blue1  =  clr1 & 0x000000ff;
+
+                int clr2=  image2.getRGB(a,b);
+                int  red2   = (clr2 & 0x00ff0000) >> 16;
+                int  green2 = (clr2 & 0x0000ff00) >> 8;
+                int  blue2  =  clr2 & 0x000000ff;
+
+                if(((red1 - red2) + (green1 - green2) + (blue1 - blue2))<50)
+                {
+                    identicalPixels=identicalPixels+1;
+                }
+                else
+                    differentPixels=differentPixels+1;
+            }
+        }
+
+        float allPixels = (height*width);
+        float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
+
+        return percentageIdenticalPixels<=99;
     }
 }
