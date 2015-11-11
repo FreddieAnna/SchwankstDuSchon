@@ -68,9 +68,9 @@ public class WebcamEvaluation {
         int identicalPixels = 0, differentPixels = 0;
 
         int width = 640;
-        int height = 50;
+        int height = 75;
 
-        for(int a=width-50;a<width;a++)
+        for(int a=width-75;a<width;a++)
         {
             for(int b=0;b<height;b++)
             {
@@ -97,15 +97,15 @@ public class WebcamEvaluation {
         float allPixels = (height*width);
         float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
 
-        return percentageIdenticalPixels<=99;
+        return percentageIdenticalPixels<=90;
     }
 
     private boolean compareTopRightCorners(BufferedImage image1, BufferedImage image2) throws IOException {
 
         int identicalPixels = 0, differentPixels = 0;
 
-        int width = 50;
-        int height = 50;
+        int width = 75;
+        int height = 75;
 
         for(int a=0;a<width;a++)
         {
@@ -134,7 +134,7 @@ public class WebcamEvaluation {
         float allPixels = (height*width);
         float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
 
-        return percentageIdenticalPixels<=99;
+        return percentageIdenticalPixels<=90;
     }
 
     private boolean compareBottomLeftCorners(BufferedImage image1, BufferedImage image2) throws IOException {
@@ -144,9 +144,9 @@ public class WebcamEvaluation {
         int width = 640;
         int height = 480;
 
-        for(int a=width-50;a<width;a++)
+        for(int a=width-75;a<width;a++)
         {
-            for(int b=height-50;b<height;b++)
+            for(int b=height-75;b<height;b++)
             {
 
                 int clr1=  image1.getRGB(a,b);
@@ -171,19 +171,19 @@ public class WebcamEvaluation {
         float allPixels = (height*width);
         float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
 
-        return percentageIdenticalPixels<=99;
+        return percentageIdenticalPixels<=90;
     }
 
     private boolean compareBottomRightCorners(BufferedImage image1, BufferedImage image2) throws IOException {
 
         int identicalPixels = 0, differentPixels = 0;
 
-        int width = 50;
+        int width = 75;
         int height = 480;
 
         for(int a=0;a<width;a++)
         {
-            for(int b=height-50;b<height;b++)
+            for(int b=height-75;b<height;b++)
             {
 
                 int clr1=  image1.getRGB(a,b);
@@ -208,6 +208,6 @@ public class WebcamEvaluation {
         float allPixels = (height*width);
         float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
 
-        return percentageIdenticalPixels<=99;
+        return percentageIdenticalPixels<=90;
     }
 }
