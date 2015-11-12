@@ -3,6 +3,7 @@ package com.core;
 import com.core.UI.WebcamEvaluation;
 import com.core.UI.WebcamManager;
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamResolution;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,6 +21,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -30,7 +35,7 @@ public class Main extends Application {
     BorderPane root = new BorderPane();
 
     BorderPane startScreen = fillPaneWithStartScreenComponents();
-    BorderPane webcamTestOneInformationScreen = fillPaneWithWebcamTest1ScreenComponents();
+    BorderPane webcamTestOneInformationScreen = fillPaneWithWebcamTest1InformationScreenComponents();
     BorderPane webcamTestOneCircleOneScreen = initiateCircle(1);
     BorderPane webcamTestOneCircleTwoScreen = initiateCircle(2);
     BorderPane webcamTestOneCircleThreeScreen = initiateCircle(3);
@@ -42,7 +47,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Test");
+        primaryStage.setTitle("Schwankst du schon?");
         root.setCenter(startScreen);
         primaryStage.setScene(new Scene(root));
         primaryStage.setFullScreen(true);
@@ -70,8 +75,11 @@ public class Main extends Application {
                                 @Override
                                 public void run() {
                                     root.getChildren().remove(webcamTestOneInformationScreen);
-                                    //root.setCenter(webcamTestOneCircleOneScreen);
-                                    initiateCircleTest();
+                                    try {
+                                        initiateCircleTest();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                         } catch (InterruptedException e) {
@@ -89,9 +97,9 @@ public class Main extends Application {
         return startScreen;
     }
 
-    public BorderPane fillPaneWithWebcamTest1ScreenComponents() {
+    public BorderPane fillPaneWithWebcamTest1InformationScreenComponents() {
 
-        BorderPane webcamTest1Screen = new BorderPane();
+        BorderPane webcamTest1InformationScreen = new BorderPane();
 
         Text text = new Text();
         text.setFont(new Font(36));
@@ -105,52 +113,50 @@ public class Main extends Application {
         HBox bottomBox = new HBox();
         bottomBox.setSpacing(50);
         bottomBox.setAlignment(Pos.CENTER);
-        webcamTest1Screen.setBottom(bottomBox);
-        webcamTest1Screen.setCenter(text);
+        webcamTest1InformationScreen.setBottom(bottomBox);
+        webcamTest1InformationScreen.setCenter(text);
 
-        return webcamTest1Screen;
+        return webcamTest1InformationScreen;
     }
 
-    private void initiateCircleTest() {
+    private void initiateCircleTest() throws IOException {
 
         root.setCenter(webcamTestOneCircleOneScreen);
 
-        /*Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            root.getChildren().remove(webcamTestOneCircleOneScreen);
-                            root.setCenter(webcamTestOneCircleTwoScreen);
-                        }
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+        Webcam webcam = Webcam.getDefault();
+        webcam.close();
+        webcam.setViewSize(WebcamResolution.VGA.getSize());
+        webcam.open();
 
-        new Thread(r).start();*/
+        ImageIO.write(webcam.getImage(), "PNG", new File("src/main/java/com/core/UI/Pictures/1.png"));
+        File file1 = new File("src/main/java/com/core/UI/Pictures/1.png");
+        FileInputStream fis1 = new FileInputStream(file1);
+        final BufferedImage image1 = ImageIO.read(fis1);
 
         Runnable r = new Runnable() {
             @Override
             public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+
                         WebcamEvaluation webcamEvaluation = new WebcamEvaluation();
-
+                        Boolean detectedMotion = null;
                         try {
-                            if (webcamEvaluation.checkIfMotionDetectedForGivenTest("CIRCLE_TEST_CIRCLE_TOP_LEFT") == true) {
-
-                                root.getChildren().remove(webcamTestOneCircleOneScreen);
-                                root.setCenter(webcamTestOneCircleTwoScreen);
-                            }
+                            detectedMotion = webcamEvaluation.checkIfMotionDetectedForGivenTest("CIRCLE_TEST_CIRCLE_TOP_LEFT", image1);
                         } catch (IOException e) {
                             e.printStackTrace();
+                        }
+
+                        if (detectedMotion) {
+
+                            root.getChildren().remove(webcamTestOneCircleOneScreen);
+                            root.setCenter(webcamTestOneCircleTwoScreen);
                         }
                     }
                 });
@@ -158,6 +164,11 @@ public class Main extends Application {
         };
 
         new Thread(r).start();
+    }
+
+    private void initiatePictureTest() {
+
+
     }
 
     /*
@@ -227,5 +238,27 @@ public class Main extends Application {
 
         }
         return circleInCornerScreen;
+    }
+
+    private BorderPane fillPaneWithWebcamTest2InformationScreenComponents() {
+
+        BorderPane webcamTest2InformationScreen = new BorderPane();
+
+        Text text = new Text();
+        text.setFont(new Font(36));
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setText("Merke dir das Bild das du unten siehst! \n Du wirst als nächstes eine Abfolge von Bildern sehen. \n Erkennst du das untenstehende wieder, strecke deine Arme in die beiden oberen Bildschirmecken aus!");
+
+        /*
+         * Informations-Text auf dem Bildschirm anzeigen
+         */
+
+        HBox bottomBox = new HBox();
+        bottomBox.setSpacing(50);
+        bottomBox.setAlignment(Pos.CENTER);
+        webcamTest2InformationScreen.setBottom(bottomBox);
+        webcamTest2InformationScreen.setCenter(text);
+
+        return webcamTest2InformationScreen;
     }
 }
