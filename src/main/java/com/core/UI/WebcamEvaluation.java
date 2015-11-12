@@ -22,9 +22,6 @@ public class WebcamEvaluation {
     public Boolean checkIfMotionDetectedForGivenTest(String currentTest, BufferedImage image1) throws IOException {
 
         Webcam webcam = Webcam.getDefault();
-        webcam.close();
-        webcam.setViewSize(WebcamResolution.VGA.getSize());
-        webcam.open();
 
         ImageIO.write(webcam.getImage(), "PNG", new File("src/main/java/com/core/UI/Pictures/2.png"));
         File file2 = new File("src/main/java/com/core/UI/Pictures/2.png");
@@ -33,7 +30,7 @@ public class WebcamEvaluation {
 
         if (currentTest.equals("CIRCLE_TEST_CIRCLE_TOP_LEFT")) {
 
-            Boolean motionInTopLeftCornerDetected = compareTopLeftCorners(image1, image2) && !compareTopRightCorners(image1, image2) && /*!compareBottomLeftCorners(image1, image2) && */!compareBottomRightCorners(image1, image2);
+            Boolean motionInTopLeftCornerDetected = compareTopLeftCorners(image1, image2) /*&& !compareTopRightCorners(image1, image2) && !compareBottomLeftCorners(image1, image2) && !compareBottomRightCorners(image1, image2)*/;
             return motionInTopLeftCornerDetected;
         }
 

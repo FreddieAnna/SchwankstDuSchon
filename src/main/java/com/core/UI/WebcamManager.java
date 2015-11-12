@@ -20,14 +20,12 @@ import java.awt.image.BufferedImage;
  */
 public class WebcamManager {
 
-    Webcam webcam = null;
+    Webcam webcam = Webcam.getDefault();
     private BufferedImage grabbedImage;
     private ObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
     private ImageView imgWebCamCapturedImage;
 
     public Webcam displayWebcamAtPosition(BorderPane webcamTestPane, String position) {
-
-        webcam = Webcam.getDefault();
 
         BorderPane webCamPane = new BorderPane();
         webCamPane.setStyle("-fx-background-color: #ccc;");

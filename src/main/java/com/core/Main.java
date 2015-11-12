@@ -52,6 +52,11 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setFullScreen(true);
         primaryStage.show();
+
+        Webcam webcam = Webcam.getDefault();
+        webcam.close();
+        webcam.setViewSize(WebcamResolution.VGA.getSize());
+        webcam.open();
     }
 
     public BorderPane fillPaneWithStartScreenComponents() {
@@ -124,9 +129,6 @@ public class Main extends Application {
         root.setCenter(webcamTestOneCircleOneScreen);
 
         Webcam webcam = Webcam.getDefault();
-        webcam.close();
-        webcam.setViewSize(WebcamResolution.VGA.getSize());
-        webcam.open();
 
         ImageIO.write(webcam.getImage(), "PNG", new File("src/main/java/com/core/UI/Pictures/1.png"));
         File file1 = new File("src/main/java/com/core/UI/Pictures/1.png");
@@ -151,6 +153,7 @@ public class Main extends Application {
                             detectedMotion = webcamEvaluation.checkIfMotionDetectedForGivenTest("CIRCLE_TEST_CIRCLE_TOP_LEFT", image1);
                         } catch (IOException e) {
                             e.printStackTrace();
+                            detectedMotion = false;
                         }
 
                         if (detectedMotion) {
