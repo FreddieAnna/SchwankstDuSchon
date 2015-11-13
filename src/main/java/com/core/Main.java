@@ -6,6 +6,7 @@ import com.core.UI.WebcamManager;
 import com.github.sarxos.webcam.Webcam;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,6 +38,8 @@ public class Main extends Application {
     public static String nickname;
 
     BorderPane root = new BorderPane();
+    final HighscoreManager hm2 = new HighscoreManager();
+    public int score;
 
     BorderPane RegisterScreen = fillPaneWithRegisterScreenComponents();
     BorderPane startScreen = fillPaneWithStartScreenComponents();
@@ -48,38 +52,29 @@ public class Main extends Application {
     BorderPane RanglisteScreen = fillPaneWithRanglistenScreenComponents();
 
     public static void main(String args[]) {
-        HighscoreManager hm1 = new HighscoreManager();
-        //Daten in Highscore speichern
-        hm1.addScore("Bart",240);
-        hm1.addScore("Marge",300);
-        hm1.addScore("Maggie",220);
-        hm1.addScore("Homer",100);
-        hm1.addScore("Lisa",270);
-        hm1.addScore(nickname, 400);
-        System.out.print(hm1.getHighscoreStringinGUI());
-
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Test");
-        root.setCenter(Ergebnisauswertung);
+        root.setCenter(RegisterScreen);
         primaryStage.setScene(new Scene(root));
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
+    /**
+     * Thomas Klaus; Registrierungsscreen anzeigen
+     */
     public BorderPane fillPaneWithRegisterScreenComponents() {
-
         final BorderPane RegisterScreen = new BorderPane();
-        HighscoreManager hm2 = new HighscoreManager();
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(55, 55, 55, 55));
+        grid.setPadding(new Insets(20, 20, 20, 20));
         Text scenetitle = new Text("Willkommen");
         scenetitle.setFont(Font.font("Arial", FontWeight.NORMAL, 40));
         grid.add(scenetitle, 0, 0, 1, 1);
@@ -99,6 +94,8 @@ public class Main extends Application {
         reBtn.getChildren().add(register);
         grid.add(reBtn, 1, 2);
 
+        register.disableProperty().bind(
+                Bindings.isEmpty(userNickname.textProperty()));
 
         final Label dieBesten3L = new Label("Die Besten 3:");
         grid.add(dieBesten3L, 0, 4);
@@ -108,6 +105,12 @@ public class Main extends Application {
         final Label dieBesten3 = new Label(hm2.getHighscoreStringinGUI());
         grid.add(dieBesten3, 1, 4);
         dieBesten3.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+
+        //disclaimer Text
+        Text disclaimer = new Text();
+        disclaimer.setFont(Font.font("Tahoma", FontWeight.NORMAL, 9));
+        disclaimer.setText("  \n \n \n \n");
+        grid.add(disclaimer, 15, 15);
 
 
         final Text actiontarget = new Text();
@@ -120,12 +123,9 @@ public class Main extends Application {
                 actiontarget.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
                 actiontarget.setText("Registriert");
                 nickname = userNickname.getText();
-                System.out.print(nickname);
+
             }
         });
-
-
-
 
 
         Button teststarten = createButton("Test starten");
@@ -134,11 +134,12 @@ public class Main extends Application {
         tsBtn.getChildren().add(teststarten);
         grid.add(tsBtn, 5, 2);
 
+        //nächsten Screen anzeigen
         teststarten.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 root.getChildren().remove(RegisterScreen);
-                root.setCenter(startScreen);
+                root.setCenter(Ergebnisauswertung);
             }
         });
         RegisterScreen.setCenter(grid);
@@ -302,67 +303,115 @@ public class Main extends Application {
             return circleInCornerScreen;
         }
         else {
-
-
         }
         return circleInCornerScreen;
     }
 
+    /**
+     * Thomas Klaus; Auswertung des Ergebnis
+    */
     public BorderPane fillPaneWithErgebnisauswertungComponents() {
         final BorderPane Ergebnisauswertung = new BorderPane();
 
-        int testpunkte = 50;
+        int testpunkte = 0; // nur zum testen, auch in den ifs zu den scores ändern
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(4, 4, 4, 4));
+        grid.setPadding(new Insets(5, 5, 5, 5));
 
-
-        if(testpunkte >= 50){
-            Image imagehoch = new Image("file:src/main/java/com/core/UI/Graphics/gruener-daumen_.jpg");
+        //wenn das Ergebnis gut ist und der Nutzer fahrtüchtig ist
+        if(testpunkte >= 75){   //score hierhin
+            Image imagehoch = new Image("file:src/main/java/com/core/UI/Graphics/handgruen.png");
             ImageView imageViewhoch = new ImageView();
             imageViewhoch.setImage(imagehoch);
 
             HBox hBox = new HBox();
             hBox.getChildren().add(imageViewhoch);
-            grid.add(imageViewhoch, 2, 2);
+            grid.add(imageViewhoch, 2, 3);
             Ergebnisauswertung.setCenter(grid);
 
-            final Label bewertungstext = new Label("Echt gut!");
+            final Label bewertungstext = new Label("Du hast den Test gut absolviert! \nDu bist nüchtern und" +
+                                "kannst Autofahren oder dich nun betrinken");
             bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
             bewertungstext.setAlignment(Pos.TOP_CENTER);
-            grid.add(bewertungstext, 2, 1);
+            grid.add(bewertungstext, 2, 2);
             Ergebnisauswertung.setCenter(grid);
+        }//End if
 
-
-        }
-        else {
-                Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/Daumen_runter.jpg");
+        else if(testpunkte >= 50 && testpunkte < 75){
+                Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/Daumen_quer.jpg");
                 ImageView imageViewrunter = new ImageView();
                 imageViewrunter.setImage(imagerunter);
 
                 HBox hBox = new HBox();
                 hBox.getChildren().add(imageViewrunter);
-                grid.add(imageViewrunter, 2, 2);
+                grid.add(imageViewrunter, 2, 3);
                 Ergebnisauswertung.setCenter(grid);
 
-                final Label bewertungstext = new Label("Läuft bei dir");
+                final Label bewertungstext = new Label("Du bist angetrunken. An deiner Stelle würde ich \nnicht mehr fahren");
                 bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
                 bewertungstext.setAlignment(Pos.TOP_CENTER);
-                grid.add(bewertungstext, 2, 1);
+                grid.add(bewertungstext, 2, 2);
                 Ergebnisauswertung.setCenter(grid);
+        }//End else if
+
+        else if(testpunkte >= 25 && testpunkte < 50){
+            Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/Daumen_quer.jpg");
+            ImageView imageViewrunter = new ImageView();
+            imageViewrunter.setImage(imagerunter);
+
+            HBox hBox = new HBox();
+            hBox.getChildren().add(imageViewrunter);
+            grid.add(imageViewrunter, 2, 3);
+            Ergebnisauswertung.setCenter(grid);
+
+            final Label bewertungstext = new Label("Eindeutig betrunken! Auf keinen Fall mehr Auto fahren");
+            bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
+            bewertungstext.setAlignment(Pos.TOP_CENTER);
+            grid.add(bewertungstext, 2, 2);
+            Ergebnisauswertung.setCenter(grid);
+        }//End else if
+
+        else if(testpunkte >= 0 && testpunkte < 25){
+            Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/daumenrot.png");
+            ImageView imageViewrunter = new ImageView();
+            imageViewrunter.setImage(imagerunter);
+
+            HBox hBox = new HBox();
+            hBox.getChildren().add(imageViewrunter);
+            grid.add(imageViewrunter, 2, 3);
+            Ergebnisauswertung.setCenter(grid);
+
+            final Label bewertungstext = new Label("Du bist sturzbetrunken! Gehe dich ausnüchtern und \nversuche es dann nochmal");
+            bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
+            bewertungstext.setAlignment(Pos.TOP_CENTER);
+            grid.add(bewertungstext, 2, 2);
+            Ergebnisauswertung.setCenter(grid);
+        }//End else if
+
+        else {
+
+        }
 
 
-        }//End else
 
+        //disclaimer Text
+        Text disclaimer = new Text();
+        disclaimer.setFont(Font.font("Tahoma", FontWeight.NORMAL, 9));
+        disclaimer.setText("Das Institut für Suchtmittelaufklärung übernimmt keinerlei Gewähr \n" +
+                "für die Verbindlichkeit der Aussagen zur Fahrtüchtikkeit. \n" +
+                "Diese Software ist keine medizinische Software und macht daher \n" +
+                "keine verbindlichen Aussagen zum Alkoholpegel des Nutzers");
+        grid.add(disclaimer, 5, 5);
 
+        //Button zum RanglistenScreen
         Button zeigeRangliste = createButton("Rangliste anzeigen");
         HBox zrBtn = new HBox(30);
         zrBtn.setAlignment(Pos.BOTTOM_CENTER);
         zrBtn.getChildren().add(zeigeRangliste);
-        grid.add(zeigeRangliste, 2, 3);
+        grid.add(zeigeRangliste, 2, 4);
         Ergebnisauswertung.setCenter(grid);
 
         zeigeRangliste.setOnAction(new EventHandler<ActionEvent>() {
@@ -372,13 +421,16 @@ public class Main extends Application {
                 root.setCenter(RanglisteScreen);
             }
         });
+        hm2.addScore(nickname, score);
 
-    return Ergebnisauswertung;
+        return Ergebnisauswertung;
     }
 
+    /**
+     * Thomas Klaus; Rangliste wird angezeigt
+     */
     public BorderPane fillPaneWithRanglistenScreenComponents(){
         final BorderPane RanglisteScreen = new BorderPane();
-        HighscoreManager hm3 = new HighscoreManager();
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -393,15 +445,29 @@ public class Main extends Application {
         RanglisteScreen.setCenter(grid);
 
 
-        final Label dieBesten = new Label(hm3.getHighscoreString());
+        final Label dieBesten = new Label(hm2.getHighscoreString());
         dieBesten.setFont(Font.font("Tahoma", FontWeight.NORMAL, 30));
         grid.add(dieBesten, 1, 3);
         RanglisteScreen.setCenter(grid);
 
+        Button Ranglisteweg = createButton("OK");
+        HBox zrBtn = new HBox(30);
+        zrBtn.setAlignment(Pos.BOTTOM_CENTER);
+        zrBtn.getChildren().add(Ranglisteweg);
+        grid.add(Ranglisteweg, 5, 5);
+        RanglisteScreen.setCenter(grid);
 
+        Ranglisteweg.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                root.getChildren().remove(RanglisteScreen);
+                //root.setCenter(RanglisteScreen);
+            }
+        });
 
         return RanglisteScreen;
     }
+
 
     public Button createButton(String text){
 

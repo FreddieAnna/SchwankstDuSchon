@@ -8,18 +8,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class HighscoreManager {
-    //arraylist of the type "score" to work with the scores inside the class
+    //arraylist des Typs "score" um mit den scores in der Klasse zu arbeiten
     private ArrayList<Score> scores;
 
-    //name of the file where the highscores will be saved
+    //name der Datei, in der die Hisghscores gespeichert werden
     private static final String HIGHSCORE_FILE = "scores.dat";
 
-    //initialising an in and outputStream for working with the file
+    //initialisierung eines in- und outputstream um mit der Datei zu arbeiten
     ObjectOutputStream outputStream = null;
     ObjectInputStream inputStream = null;
 
     public HighscoreManager() {
-        //initialising the scores-arraylist
+        //initialisierung der scores-arraylist
         scores = new ArrayList<Score>();
     }
     public ArrayList<Score> getScores() {
@@ -28,18 +28,15 @@ public class HighscoreManager {
         return scores;
     }
 
-
-    /*
-    create a new object "comparator" from the class ScoreComparator
-    sort the arraylist "scores" with help of "comparator"
-     */
+     //erstellung eines Objektes "comparator" der Klasse ScoreComparator
+     //sortieren der Arraylist "scores" mit Hilfe des "comparator"
     private void sort() {
         ScoreComparator comparator = new ScoreComparator();
         Collections.sort(scores, comparator);
     }
 
-    //add scores to the scorefile
-    //new scores are added to the arraylist and the high-score file is updated with it
+    //scores zu der Scoredatei hinzufügen
+    //neue scores werden zu der arraylist hinzugefügt und die Datei wird aktualisiert
     public void addScore(String name, int score) {
         loadScoreFile();
         scores.add(new Score(name, score));
@@ -89,7 +86,7 @@ public class HighscoreManager {
     }
 
 
-    //for displaying Highscores in the GUI
+    //um die Highscores im Startbildschirm anzuzeigen
     public String getHighscoreStringinGUI() {
         String highscoreString = "";
         int max = 3;
@@ -108,10 +105,10 @@ public class HighscoreManager {
         }
         return highscoreString;
     }
-
+    //um die Highscores im Endscreen anzuzeigen
     public String getHighscoreString() {
         String highscoreString = "";
-        int max = 20;
+        int max = 15;
 
         ArrayList<Score> scores;
         scores = getScores();

@@ -3,10 +3,9 @@ package com.core.UI.Highscore;
 /**
  * Created by Thomas on 09.11.2015.
  */
-/*
-    compare 2 objects of the type score.
-    -1 means the first score is greater than the 2nd one, 1  means it's smaller and 0 means it's equal.
- */
+
+    //2 Objekte vom Typ score vergleichen
+    //-1 bedeutet der erste score ist größer, 1 bedeutet der zweite score ist größer. 0 bedeutet sie sind gleich
 import java.util.Comparator;
 
 public class ScoreComparator implements Comparator<Score> {

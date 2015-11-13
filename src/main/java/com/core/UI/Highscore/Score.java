@@ -4,10 +4,8 @@ package com.core.UI.Highscore;
  * Created by Thomas on 09.11.2015.
  */
 import java.io.Serializable;
-/*
-    To make an arraylist of the type Score that contains the name and score of a player.
-  */
 
+    //um eine arraylist des Typs Score mit name und score eines Spielers zu erstellen
 public class Score  implements Serializable {
     private int score;
     private String name;
