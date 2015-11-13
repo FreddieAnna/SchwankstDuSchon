@@ -1,5 +1,7 @@
 package com.core;
 
+import java.io.IOException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -30,9 +32,9 @@ public class Main extends Application {
 	BorderPane clockTestClock2 = fillPaneWithClock2();
 	BorderPane clockTestClock3 = fillPaneWithClock3();
 	
-	BorderPane explanationCalculateTest = fillPaneWithExplanationCalculateTest();
-	BorderPane calculateTestCalculate1 = fillPaneWithCalculate1();
-	BorderPane calculateTestCalculate2 = fillPaneWithCalculate2();
+//	BorderPane explanationCalculateTest = fillPaneWithExplanationCalculateTest();
+//	BorderPane calculateTestCalculate1 = fillPaneWithCalculate1();
+//	BorderPane calculateTestCalculate2 = fillPaneWithCalculate2();
 
 	
 	//Punkte für den Uhrentest
@@ -72,30 +74,29 @@ public class Main extends Application {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				root.getChildren().remove(startScreen);
-				root.setCenter(explanationClockTest);
-				
-				  Runnable r = new Runnable() {
-	                    @Override
-	                    public void run() {
-	                        try {
-	                            Thread.sleep(8000);
-	                            Platform.runLater(new Runnable() {
-	                                @Override
-	                                public void run() {
-	                                    //initiateCircleTest(root);
-	                                    root.getChildren().remove(explanationClockTest);
-	                                    root.setCenter(clockTestClock1);
-	                                }
-	                            });
-	                        } catch (InterruptedException e) {
-	                            e.printStackTrace();
-	                        }
-	                    }
-	                };
+                root.setCenter(explanationClockTest);
 
-	                new Thread(r).start();
-			}
-		});
+                Runnable r = new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(3000);
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    root.getChildren().remove(explanationClockTest);
+                                    root.setCenter(clockTestClock1);
+                                }
+                            });
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                new Thread(r).start();
+            }
+        });	
 
 		startScreen.setCenter(button);
 
@@ -243,22 +244,43 @@ public class Main extends Application {
 		bottomBox.setSpacing(50);
 		bottomBox.setAlignment(Pos.CENTER);
 		bottomBox.getChildren().addAll(button1, button2, button3, button4);
-		clockTestClock1.setCenter(imgView);
-		clockTestClock1.setBottom(bottomBox);
+		
+		Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                    	root.getChildren().remove(clockTestClock1);
+                        root.setCenter(clockTestClock1);
+                    }
+                });
+            }
+        };
+
+        new Thread(r).start();
 
 //		 Timer zum Antworten innerhalb von 5 Sekunden festlegen
-		Timeline timeline = new Timeline();
-		timeline.getKeyFrames().add(
-				new KeyFrame(Duration.seconds(5),
-						new EventHandler<ActionEvent>() {
-							@Override
-							public void handle(ActionEvent event) {
-								root.getChildren().remove(clockTestClock1);
-								root.setCenter(clockTestClock2);
-							}
-						}));
-		
-		timeline.play();
+//		Timeline timeline = new Timeline();
+//		timeline.getKeyFrames().add(
+//				new KeyFrame(Duration.seconds(5),
+//						new EventHandler<ActionEvent>() {
+//							@Override
+//							public void handle(ActionEvent event) {
+//								root.getChildren().remove(clockTestClock1);
+//								root.setCenter(clockTestClock2);
+//							}
+//						}));
+//		
+//		timeline.play();
+	
+		clockTestClock1.setCenter(imgView);
+		clockTestClock1.setBottom(bottomBox);
 
 		return clockTestClock1;
 	}
@@ -332,21 +354,41 @@ public class Main extends Application {
 		bottomBox.setSpacing(50);
 		bottomBox.setAlignment(Pos.CENTER);
 		bottomBox.getChildren().addAll(button1, button2, button3, button4);
-		clockTestClock2.setCenter(imgView);
-		clockTestClock2.setBottom(bottomBox);
 
+		Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                    	root.getChildren().remove(clockTestClock2);
+                        root.setCenter(clockTestClock3);
+                    }
+                });
+            }
+        };
+
+        new Thread(r).start();
 		// Timer zum Antworten innerhalb von 5 Sekunden festlegen
-		Timeline timeline = new Timeline();
-		timeline.getKeyFrames().add(
-				new KeyFrame(Duration.seconds(5),
-						new EventHandler<ActionEvent>() {
-							@Override
-							public void handle(ActionEvent event) {
-								root.getChildren().remove(clockTestClock2);
-								root.setCenter(clockTestClock3);
-							}
-						}));
-		timeline.play();
+//		Timeline timeline = new Timeline();
+//		timeline.getKeyFrames().add(
+//				new KeyFrame(Duration.seconds(5),
+//						new EventHandler<ActionEvent>() {
+//							@Override
+//							public void handle(ActionEvent event) {
+//								root.getChildren().remove(clockTestClock2);
+//								root.setCenter(clockTestClock3);
+//							}
+//						}));
+//		timeline.play();
+        
+        clockTestClock2.setCenter(imgView);
+		clockTestClock2.setBottom(bottomBox);
 
 		return clockTestClock2;
 
@@ -417,20 +459,21 @@ public class Main extends Application {
 		bottomBox.setSpacing(50);
 		bottomBox.setAlignment(Pos.CENTER);
 		bottomBox.getChildren().addAll(button1, button2, button3, button4);
-		clockTestClock3.setCenter(imgView);
-		clockTestClock3.setBottom(bottomBox);
 
 		// Timer zum antworten innerhalb von 5 Sekunden festlegen
-		Timeline timeline = new Timeline();
-		timeline.getKeyFrames().add(
-				new KeyFrame(Duration.seconds(5),
-						new EventHandler<ActionEvent>() {
-							@Override
-							public void handle(ActionEvent event) {
-								// TODO nächsten Test starten;
-							}
-						}));
-		timeline.play();
+//		Timeline timeline = new Timeline();
+//		timeline.getKeyFrames().add(
+//				new KeyFrame(Duration.seconds(5),
+//						new EventHandler<ActionEvent>() {
+//							@Override
+//							public void handle(ActionEvent event) {
+//								// TODO nächsten Test starten;
+//							}
+//						}));
+//		timeline.play();
+		
+		clockTestClock3.setCenter(imgView);
+		clockTestClock3.setBottom(bottomBox);
 
 		return clockTestClock3;
 	}
@@ -479,8 +522,8 @@ public class Main extends Application {
 			public void handle(ActionEvent actionEvent) {
 				colorButtonRed(button1);
 				colorButtonGreen(button4);
-				root.getChildren().remove(calculateTestCalculate1);
-				root.setCenter(calculateTestCalculate2);
+				//root.getChildren().remove(calculateTestCalculate1);
+				//root.setCenter(calculateTestCalculate2);
 			}
 
 		});
@@ -490,8 +533,8 @@ public class Main extends Application {
 			public void handle(ActionEvent actionEvent) {
 				colorButtonRed(button2);
 				colorButtonGreen(button4);
-				root.getChildren().remove(calculateTestCalculate1);
-				root.setCenter(calculateTestCalculate2);
+//				root.getChildren().remove(calculateTestCalculate1);
+//				root.setCenter(calculateTestCalculate2);
 			}
 		});
 
@@ -500,8 +543,8 @@ public class Main extends Application {
 			public void handle(ActionEvent actionEvent) {
 				colorButtonRed(button3);
 				colorButtonGreen(button4);
-				root.getChildren().remove(calculateTestCalculate1);
-				root.setCenter(calculateTestCalculate2);
+//				root.getChildren().remove(calculateTestCalculate1);
+//				root.setCenter(calculateTestCalculate2);
 			}
 		});
 
@@ -510,8 +553,8 @@ public class Main extends Application {
 			public void handle(ActionEvent actionEvent) {
 				colorButtonGreen(button4);
 				pointsTestRechnen = +10;
-				root.getChildren().remove(calculateTestCalculate1);
-				root.setCenter(calculateTestCalculate2);
+//				root.getChildren().remove(calculateTestCalculate1);
+//				root.setCenter(calculateTestCalculate2);
 			}
 		});
 		
@@ -528,8 +571,8 @@ public class Main extends Application {
 		    new EventHandler<ActionEvent>() {
 		        @Override
 		        public void handle(ActionEvent event) {
-		        	root.getChildren().remove(calculateTestCalculate1);
-					root.setCenter(calculateTestCalculate2);
+//		        	root.getChildren().remove(calculateTestCalculate1);
+//					root.setCenter(calculateTestCalculate2);
 		        }
 		    }));
 		timeline.play();
