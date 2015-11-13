@@ -30,7 +30,7 @@ public class WebcamEvaluation {
 
         if (currentTest.equals("CIRCLE_TEST_CIRCLE_TOP_LEFT")) {
 
-            Boolean motionInTopLeftCornerDetected = compareTopLeftCorners(image1, image2) /*&& !compareTopRightCorners(image1, image2) && !compareBottomLeftCorners(image1, image2) && !compareBottomRightCorners(image1, image2)*/;
+            Boolean motionInTopLeftCornerDetected = compareTopLeftCorners(image1, image2) && !compareTopRightCorners(image1, image2) && !compareBottomLeftCorners(image1, image2) && !compareBottomRightCorners(image1, image2);
             return motionInTopLeftCornerDetected;
         }
 
@@ -77,7 +77,7 @@ public class WebcamEvaluation {
                 int  green2 = (clr2 & 0x0000ff00) >> 8;
                 int  blue2  =  clr2 & 0x000000ff;
 
-                if(((red1 - red2) + (green1 - green2) + (blue1 - blue2))<50)
+                if(((red1 - red2)^2 + (green1 - green2)^2 + (blue1 - blue2)^2)<250)
                 {
                     identicalPixels=identicalPixels+1;
                 }
@@ -89,7 +89,7 @@ public class WebcamEvaluation {
         float allPixels = (height*width);
         float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
 
-        return percentageIdenticalPixels<=90;
+        return percentageIdenticalPixels<=95;
     }
 
     private boolean compareTopRightCorners(BufferedImage image1, BufferedImage image2) throws IOException {
@@ -114,7 +114,7 @@ public class WebcamEvaluation {
                 int  green2 = (clr2 & 0x0000ff00) >> 8;
                 int  blue2  =  clr2 & 0x000000ff;
 
-                if(((red1 - red2) + (green1 - green2) + (blue1 - blue2))<50)
+                if(((red1 - red2)^2 + (green1 - green2)^2 + (blue1 - blue2)^2)<250)
                 {
                     identicalPixels=identicalPixels+1;
                 }
@@ -126,7 +126,7 @@ public class WebcamEvaluation {
         float allPixels = (height*width);
         float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
 
-        return percentageIdenticalPixels<=90;
+        return percentageIdenticalPixels<=95;
     }
 
     private boolean compareBottomLeftCorners(BufferedImage image1, BufferedImage image2) throws IOException {
@@ -151,7 +151,7 @@ public class WebcamEvaluation {
                 int  green2 = (clr2 & 0x0000ff00) >> 8;
                 int  blue2  =  clr2 & 0x000000ff;
 
-                if(((red1 - red2) + (green1 - green2) + (blue1 - blue2))<50)
+                if(((red1 - red2)^2 + (green1 - green2)^2 + (blue1 - blue2)^2)<250)
                 {
                     identicalPixels=identicalPixels+1;
                 }
@@ -163,7 +163,7 @@ public class WebcamEvaluation {
         float allPixels = (height*width);
         float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
 
-        return percentageIdenticalPixels<=90;
+        return percentageIdenticalPixels<=95;
     }
 
     private boolean compareBottomRightCorners(BufferedImage image1, BufferedImage image2) throws IOException {
@@ -188,7 +188,7 @@ public class WebcamEvaluation {
                 int  green2 = (clr2 & 0x0000ff00) >> 8;
                 int  blue2  =  clr2 & 0x000000ff;
 
-                if(((red1 - red2) + (green1 - green2) + (blue1 - blue2))<50)
+                if(((red1 - red2)^2 + (green1 - green2)^2 + (blue1 - blue2)^2)<250)
                 {
                     identicalPixels=identicalPixels+1;
                 }
@@ -200,6 +200,6 @@ public class WebcamEvaluation {
         float allPixels = (height*width);
         float percentageIdenticalPixels =(100*identicalPixels)/allPixels;
 
-        return percentageIdenticalPixels<=90;
+        return percentageIdenticalPixels<=95;
     }
 }

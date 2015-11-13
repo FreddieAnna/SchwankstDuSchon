@@ -40,6 +40,8 @@ public class Main extends Application {
     BorderPane webcamTestOneCircleTwoScreen = initiateCircle(2);
     BorderPane webcamTestOneCircleThreeScreen = initiateCircle(3);
     BorderPane webcamTestOneCircleFourScreen = initiateCircle(4);
+    BorderPane pickedCorrectAnswerScreen = fillPaneWithCorrectAnswerScreenComponents();
+    BorderPane pickedWrongAnswerScreen = fillPaneWithWrongAnswerScreenComponents();
 
     public static void main(String args[]) {
         launch(args);
@@ -81,7 +83,7 @@ public class Main extends Application {
                                 public void run() {
                                     root.getChildren().remove(webcamTestOneInformationScreen);
                                     try {
-                                        initiateCircleTest();
+                                        initiateCircleTestPhaseOne();
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -101,6 +103,10 @@ public class Main extends Application {
 
         return startScreen;
     }
+
+    /*
+     * @Author Jonas Siefker
+     */
 
     public BorderPane fillPaneWithWebcamTest1InformationScreenComponents() {
 
@@ -124,7 +130,11 @@ public class Main extends Application {
         return webcamTest1InformationScreen;
     }
 
-    private void initiateCircleTest() throws IOException {
+    /*
+     * @Author Jonas Siefker
+     */
+
+    private void initiateCircleTestPhaseOne() throws IOException {
 
         root.setCenter(webcamTestOneCircleOneScreen);
 
@@ -139,7 +149,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -159,7 +169,59 @@ public class Main extends Application {
                         if (detectedMotion) {
 
                             root.getChildren().remove(webcamTestOneCircleOneScreen);
-                            root.setCenter(webcamTestOneCircleTwoScreen);
+                            root.setCenter(pickedCorrectAnswerScreen);
+
+                            Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedCorrectAnswerScreen);
+                                            try {
+                                                initiateCircleTestPhaseTwo();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
+                        }
+                        else {
+                            root.getChildren().remove(webcamTestOneCircleOneScreen);
+                            root.setCenter(pickedWrongAnswerScreen);
+
+                            final Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedWrongAnswerScreen);
+                                            try {
+                                                initiateCircleTestPhaseTwo();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
                         }
                     }
                 });
@@ -169,12 +231,312 @@ public class Main extends Application {
         new Thread(r).start();
     }
 
+    /*
+     * @Author Jonas Siefker
+     */
+
+    private void initiateCircleTestPhaseTwo() throws IOException {
+
+        root.setCenter(webcamTestOneCircleTwoScreen);
+
+        Webcam webcam = Webcam.getDefault();
+
+        ImageIO.write(webcam.getImage(), "PNG", new File("src/main/java/com/core/UI/Pictures/1.png"));
+        File file1 = new File("src/main/java/com/core/UI/Pictures/1.png");
+        FileInputStream fis1 = new FileInputStream(file1);
+        final BufferedImage image1 = ImageIO.read(fis1);
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        WebcamEvaluation webcamEvaluation = new WebcamEvaluation();
+                        Boolean detectedMotion = null;
+                        try {
+                            detectedMotion = webcamEvaluation.checkIfMotionDetectedForGivenTest("CIRCLE_TEST_CIRCLE_BOTTOM_RIGHT", image1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            detectedMotion = false;
+                        }
+
+                        if (detectedMotion) {
+
+                            root.getChildren().remove(webcamTestOneCircleTwoScreen);
+                            root.setCenter(pickedCorrectAnswerScreen);
+
+                            Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedCorrectAnswerScreen);
+                                            try {
+                                                initiateCircleTestPhaseThree();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
+                        }
+                        else {
+                            root.getChildren().remove(webcamTestOneCircleTwoScreen);
+                            root.setCenter(pickedWrongAnswerScreen);
+
+                            final Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedWrongAnswerScreen);
+                                            try {
+                                                initiateCircleTestPhaseThree();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
+                        }
+                    }
+                });
+            }
+        };
+
+        new Thread(r).start();
+    }
+
+    /*
+     * @Author Jonas Siefker
+     */
+
+    private void initiateCircleTestPhaseThree() throws IOException {
+
+        root.setCenter(webcamTestOneCircleThreeScreen);
+
+        Webcam webcam = Webcam.getDefault();
+
+        ImageIO.write(webcam.getImage(), "PNG", new File("src/main/java/com/core/UI/Pictures/1.png"));
+        File file1 = new File("src/main/java/com/core/UI/Pictures/1.png");
+        FileInputStream fis1 = new FileInputStream(file1);
+        final BufferedImage image1 = ImageIO.read(fis1);
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        WebcamEvaluation webcamEvaluation = new WebcamEvaluation();
+                        Boolean detectedMotion = null;
+                        try {
+                            detectedMotion = webcamEvaluation.checkIfMotionDetectedForGivenTest("CIRCLE_TEST_CIRCLE_TOP_RIGHT", image1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            detectedMotion = false;
+                        }
+
+                        if (detectedMotion) {
+
+                            root.getChildren().remove(webcamTestOneCircleThreeScreen);
+                            root.setCenter(pickedCorrectAnswerScreen);
+
+                            Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedCorrectAnswerScreen);
+                                            try {
+                                                initiateCircleTestPhaseFour();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
+                        }
+                        else {
+                            root.getChildren().remove(webcamTestOneCircleThreeScreen);
+                            root.setCenter(pickedWrongAnswerScreen);
+
+                            final Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedWrongAnswerScreen);
+                                            try {
+                                                initiateCircleTestPhaseFour();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
+                        }
+                    }
+                });
+            }
+        };
+
+        new Thread(r).start();
+    }
+
+    /*
+     * @Author Jonas Siefker
+     */
+
+    private void initiateCircleTestPhaseFour() throws IOException {
+
+        root.setCenter(webcamTestOneCircleFourScreen);
+
+        Webcam webcam = Webcam.getDefault();
+
+        ImageIO.write(webcam.getImage(), "PNG", new File("src/main/java/com/core/UI/Pictures/1.png"));
+        File file1 = new File("src/main/java/com/core/UI/Pictures/1.png");
+        FileInputStream fis1 = new FileInputStream(file1);
+        final BufferedImage image1 = ImageIO.read(fis1);
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        WebcamEvaluation webcamEvaluation = new WebcamEvaluation();
+                        Boolean detectedMotion = null;
+                        try {
+                            detectedMotion = webcamEvaluation.checkIfMotionDetectedForGivenTest("CIRCLE_TEST_CIRCLE_BOTTOM_LEFT", image1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            detectedMotion = false;
+                        }
+
+                        if (detectedMotion) {
+
+                            root.getChildren().remove(webcamTestOneCircleFourScreen);
+                            root.setCenter(pickedCorrectAnswerScreen);
+
+                            Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedCorrectAnswerScreen);
+                                            // TODO nächster Test
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
+                        }
+                        else {
+                            root.getChildren().remove(webcamTestOneCircleFourScreen);
+                            root.setCenter(pickedWrongAnswerScreen);
+
+                            final Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedWrongAnswerScreen);
+                                            //TODO nächster Test
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
+                        }
+                    }
+                });
+            }
+        };
+
+        new Thread(r).start();
+    }
+
+    /*
+     * @Author Jonas Siefker
+     */
+
     private void initiatePictureTest() {
 
 
     }
 
     /*
+     * @Author Jonas Siefker
      * Methode die mithilfe einer übergebenen Nummer den richtigen Kreis auswählt
      */
 
@@ -191,6 +553,7 @@ public class Main extends Application {
     }
 
     /*
+     * @Author Jonas Siefker
      * Methode die zwei positions-Strings nutzt um den entsprechenden Kreis auf dem Bildschirm anzuzeigen
      */
 
@@ -241,6 +604,42 @@ public class Main extends Application {
 
         }
         return circleInCornerScreen;
+    }
+
+    /*
+     * @Author Jonas Siefker
+     */
+
+    private BorderPane fillPaneWithCorrectAnswerScreenComponents() {
+
+        BorderPane correctAnswerScreen = new BorderPane();
+
+        Text text = new Text();
+        text.setFont(new Font(75));
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setText("Sehr gut!");
+
+        correctAnswerScreen.setCenter(text);
+
+        return correctAnswerScreen;
+    }
+
+    /*
+     * @Author Jonas Siefker
+     */
+
+    private BorderPane fillPaneWithWrongAnswerScreenComponents() {
+
+        BorderPane wrongAnswerScreen = new BorderPane();
+
+        Text text = new Text();
+        text.setFont(new Font(75));
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setText("Leider nicht...");
+
+        wrongAnswerScreen.setCenter(text);
+
+        return wrongAnswerScreen;
     }
 
     private BorderPane fillPaneWithWebcamTest2InformationScreenComponents() {
