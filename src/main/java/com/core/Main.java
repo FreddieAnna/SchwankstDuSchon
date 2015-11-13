@@ -360,7 +360,7 @@ public class Main extends Application {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				colorButtonGreen(button3);
-				pointsClockTest = +5;
+				pointsClockTest = +5; //TODO
 			}
 		});
 
@@ -421,7 +421,7 @@ public class Main extends Application {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				colorButtonGreen(button2);
-				pointsClockTest = +10;
+				pointsClockTest = +10; //TODO
 			}
 		});
 
@@ -482,8 +482,7 @@ public class Main extends Application {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				colorButtonGreen(button1);
-				pointsClockTest = +5;
-				System.out.println(pointsClockTest);
+				pointsClockTest = +5; //TODO
 			}
 
 		});
@@ -602,7 +601,7 @@ public class Main extends Application {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				colorButtonGreen(button4);
-				pointsTestRechnen = +10;
+				pointsTestRechnen = +10; //TODO
 			}
 		});
 
@@ -641,7 +640,7 @@ public class Main extends Application {
 			@Override
 			public void handle(ActionEvent actionEvent) {
 				colorButtonGreen(button1);
-				pointsTestRechnen = +10;
+				pointsTestRechnen = +10; //TODO
 			}
 
 		});
