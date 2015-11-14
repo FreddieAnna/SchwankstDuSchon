@@ -40,6 +40,12 @@ public class Main extends Application {
     BorderPane webcamTestOneCircleTwoScreen = initiateCircle(2);
     BorderPane webcamTestOneCircleThreeScreen = initiateCircle(3);
     BorderPane webcamTestOneCircleFourScreen = initiateCircle(4);
+    BorderPane webcamTestTwoInformationScreen = fillPaneWithWebcamTest2InformationScreenComponents();
+    BorderPane webcamTestTwoPictureOneScreen = showPicture(1);
+    BorderPane webcamTestTwoPictureTwoScreen = showPicture(2);
+    BorderPane webcamTestTwoPictureThreeScreen = showPicture(3);
+    BorderPane webcamTestTwoPictureFourScreen = showPicture(4);
+    BorderPane webcamTestTwoPictureFiveScreen = showPicture(5);
     BorderPane pickedCorrectAnswerScreen = fillPaneWithCorrectAnswerScreenComponents();
     BorderPane pickedWrongAnswerScreen = fillPaneWithWrongAnswerScreenComponents();
 
@@ -71,7 +77,7 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 root.getChildren().remove(startScreen);
-                root.setCenter(webcamTestOneInformationScreen);
+                root.setCenter(webcamTestTwoInformationScreen);
 
                 Runnable r = new Runnable() {
                     @Override
@@ -81,12 +87,13 @@ public class Main extends Application {
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    root.getChildren().remove(webcamTestOneInformationScreen);
-                                    try {
+                                    root.getChildren().remove(webcamTestTwoInformationScreen);
+                                    /*try {
                                         initiateCircleTestPhaseOne();
                                     } catch (IOException e) {
                                         e.printStackTrace();
-                                    }
+                                    }*/
+                                    root.setCenter(webcamTestTwoPictureOneScreen);
                                 }
                             });
                         } catch (InterruptedException e) {
@@ -118,13 +125,9 @@ public class Main extends Application {
         text.setText(" Im nächsten Test werden farbige Kreise in verschiedenen Bildschirmecken auftauchen.\n Strecke deinen Arm schnell in die Richtung einer Ecke aus, in der ein Kreis erscheint!");
 
         /*
-         * Informations-Text auf dem Bildschirm anzeigen
+         * Informations-Text zum Kreis-Test auf dem Bildschirm anzeigen
          */
 
-        HBox bottomBox = new HBox();
-        bottomBox.setSpacing(50);
-        bottomBox.setAlignment(Pos.CENTER);
-        webcamTest1InformationScreen.setBottom(bottomBox);
         webcamTest1InformationScreen.setCenter(text);
 
         return webcamTest1InformationScreen;
@@ -149,7 +152,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -250,7 +253,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -351,7 +354,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -452,7 +455,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -486,7 +489,11 @@ public class Main extends Application {
                                         @Override
                                         public void run() {
                                             root.getChildren().remove(pickedCorrectAnswerScreen);
-                                            // TODO nächster Test
+                                            try {
+                                                initiateCircleTestPhaseFive();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                     });
                                 }
@@ -510,7 +517,11 @@ public class Main extends Application {
                                         @Override
                                         public void run() {
                                             root.getChildren().remove(pickedWrongAnswerScreen);
-                                            //TODO nächster Test
+                                            try {
+                                                initiateCircleTestPhaseFive();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                     });
                                 }
@@ -526,13 +537,93 @@ public class Main extends Application {
         new Thread(r).start();
     }
 
-    /*
-     * @Author Jonas Siefker
-     */
+    private void initiateCircleTestPhaseFive() throws IOException {
 
-    private void initiatePictureTest() {
+        root.setCenter(webcamTestOneCircleThreeScreen);
 
+        Webcam webcam = Webcam.getDefault();
 
+        ImageIO.write(webcam.getImage(), "PNG", new File("src/main/java/com/core/UI/Pictures/1.png"));
+        File file1 = new File("src/main/java/com/core/UI/Pictures/1.png");
+        FileInputStream fis1 = new FileInputStream(file1);
+        final BufferedImage image1 = ImageIO.read(fis1);
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        WebcamEvaluation webcamEvaluation = new WebcamEvaluation();
+                        Boolean detectedMotion = null;
+                        try {
+                            detectedMotion = webcamEvaluation.checkIfMotionDetectedForGivenTest("CIRCLE_TEST_CIRCLE_TOP_RIGHT", image1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            detectedMotion = false;
+                        }
+
+                        if (detectedMotion) {
+
+                            root.getChildren().remove(webcamTestOneCircleThreeScreen);
+                            root.setCenter(pickedCorrectAnswerScreen);
+
+                            Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedCorrectAnswerScreen);
+                                            initiatePictureTest();
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
+                        }
+                        else {
+                            root.getChildren().remove(webcamTestOneCircleFourScreen);
+                            root.setCenter(pickedWrongAnswerScreen);
+
+                            final Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            root.getChildren().remove(pickedWrongAnswerScreen);
+                                            initiatePictureTest();
+                                        }
+                                    });
+                                }
+                            };
+
+                            new Thread(r).start();
+                        }
+                    }
+                });
+            }
+        };
+
+        new Thread(r).start();
     }
 
     /*
@@ -649,18 +740,64 @@ public class Main extends Application {
         Text text = new Text();
         text.setFont(new Font(36));
         text.setTextAlignment(TextAlignment.CENTER);
-        text.setText("Merke dir das Bild das du unten siehst! \n Du wirst als nächstes eine Abfolge von Bildern sehen. \n Erkennst du das untenstehende wieder, strecke deine Arme in die beiden oberen Bildschirmecken aus!");
+        text.setText("Merke dir das Bild das du unten siehst! \n Du wirst als nächstes eine Abfolge von Bildern sehen. \n Erkennst du das untenstehende wieder, \nstrecke deine Arme in die beiden oberen Bildschirmecken aus!");
 
         /*
-         * Informations-Text auf dem Bildschirm anzeigen
+         * Informations-Text zum Reaktions-Test auf dem Bildschirm anzeigen
          */
 
-        HBox bottomBox = new HBox();
-        bottomBox.setSpacing(50);
-        bottomBox.setAlignment(Pos.CENTER);
-        webcamTest2InformationScreen.setBottom(bottomBox);
-        webcamTest2InformationScreen.setCenter(text);
+        Image image = new Image("file:src/main/java/com/core/UI/Graphics/Bild_4.png");
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+
+        HBox hBox = new HBox();
+        hBox.setMaxHeight(640);
+        hBox.setMaxWidth(568);
+        hBox.getChildren().add(imageView);
+
+        webcamTest2InformationScreen.setTop(text);
+        webcamTest2InformationScreen.setCenter(hBox);
 
         return webcamTest2InformationScreen;
+    }
+
+    /*
+     * @Author Jonas Siefker
+     */
+
+    private void initiatePictureTest() {
+
+        root.setCenter(webcamTestTwoInformationScreen);
+    }
+
+    private BorderPane showPicture(int pictureNumber) {
+
+        BorderPane pictureScreen = new BorderPane();
+
+        Image image;
+
+        switch (pictureNumber) {
+            case(1): image = new Image("file:src/main/java/com/core/UI/Graphics/Bild_1.jpg"); break;
+            case(2): image = new Image("file:src/main/java/com/core/UI/Graphics/Bild_2.png"); break;
+            case(3): image = new Image("file:src/main/java/com/core/UI/Graphics/Bild_3.jpg"); break;
+            case(4): image = new Image("file:src/main/java/com/core/UI/Graphics/Bild_4.png"); break;
+            case(5): image = new Image("file:src/main/java/com/core/UI/Graphics/Bild_5.png"); break;
+            default: image = null;
+        }
+
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+
+        HBox hBox = new HBox();
+        hBox.setMaxHeight(640);
+        hBox.setMaxWidth(568);
+        hBox.getChildren().add(imageView);
+
+        pictureScreen.setCenter(hBox);
+
+        WebcamManager webcamManager = new WebcamManager();
+        Webcam webcam = webcamManager.displayWebcamAtPosition(pictureScreen, "BOTTOM_RIGHT");
+
+        return pictureScreen;
     }
 }

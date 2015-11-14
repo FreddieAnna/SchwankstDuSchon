@@ -77,7 +77,7 @@ public class WebcamEvaluation {
                 int  green2 = (clr2 & 0x0000ff00) >> 8;
                 int  blue2  =  clr2 & 0x000000ff;
 
-                if(((red1 - red2)^2 + (green1 - green2)^2 + (blue1 - blue2)^2)<250)
+                if(((red1 - red2)^2 + (green1 - green2)^2 + (blue1 - blue2)^2)<250)  // Summanden werden quadriert um gegenseitiges Ausgleichen zu vermeiden. 250 = Schwellwert ab wann sich Pixel unterscheiden
                 {
                     identicalPixels=identicalPixels+1;
                 }
