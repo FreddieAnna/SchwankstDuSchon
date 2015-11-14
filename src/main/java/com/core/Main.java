@@ -70,6 +70,7 @@ public class Main extends Application {
     public BorderPane fillPaneWithRegisterScreenComponents() {
         final BorderPane RegisterScreen = new BorderPane();
 
+        //grid erstellen
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -79,11 +80,9 @@ public class Main extends Application {
         scenetitle.setFont(Font.font("Arial", FontWeight.NORMAL, 40));
         grid.add(scenetitle, 0, 0, 1, 1);
 
-
         final Label nickName = new Label("Nickname:");
         grid.add(nickName, 0, 1);
         nickName.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
-
 
         final TextField userNickname = new TextField();
         grid.add(userNickname, 1, 1);
@@ -94,6 +93,7 @@ public class Main extends Application {
         reBtn.getChildren().add(register);
         grid.add(reBtn, 1, 2);
 
+        //damit man einen nicknamen angeben muss
         register.disableProperty().bind(
                 Bindings.isEmpty(userNickname.textProperty()));
 
@@ -106,16 +106,24 @@ public class Main extends Application {
         grid.add(dieBesten3, 1, 4);
         dieBesten3.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
-        //disclaimer Text
-        Text disclaimer = new Text();
-        disclaimer.setFont(Font.font("Tahoma", FontWeight.NORMAL, 9));
-        disclaimer.setText("  \n \n \n \n");
-        grid.add(disclaimer, 15, 15);
+        //damit der Inhalt vom screen weiter oben ist
+        Text schoenmach = new Text();
+        schoenmach.setFont(Font.font("Tahoma", FontWeight.NORMAL, 9));
+        schoenmach.setText("  \n \n \n \n");
+        grid.add(schoenmach, 15, 15);
+
+        final Button teststarten = createButton("Test starten");
+        HBox tsBtn = new HBox(50);
+        tsBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        tsBtn.getChildren().add(teststarten);
+        grid.add(tsBtn, 5, 2);
+        teststarten.setDisable(true); //button ausblenden um registrierung zu erzwingen
 
 
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 3);
 
+        //registrieren und nickname speichern; teststarten button freigeben
         register.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -123,16 +131,11 @@ public class Main extends Application {
                 actiontarget.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
                 actiontarget.setText("Registriert");
                 nickname = userNickname.getText();
+                teststarten.setDisable(false);
 
             }
         });
 
-
-        Button teststarten = createButton("Test starten");
-        HBox tsBtn = new HBox(50);
-        tsBtn.setAlignment(Pos.BOTTOM_RIGHT);
-        tsBtn.getChildren().add(teststarten);
-        grid.add(tsBtn, 5, 2);
 
         //nächsten Screen anzeigen
         teststarten.setOnAction(new EventHandler<ActionEvent>() {
@@ -313,7 +316,7 @@ public class Main extends Application {
     public BorderPane fillPaneWithErgebnisauswertungComponents() {
         final BorderPane Ergebnisauswertung = new BorderPane();
 
-        int testpunkte = 0; // nur zum testen, auch in den ifs zu den scores ändern
+        int testpunkte = 55; // nur zum testen, auch in den ifs zu den scores ändern
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -340,7 +343,9 @@ public class Main extends Application {
             Ergebnisauswertung.setCenter(grid);
         }//End if
 
-        else if(testpunkte >= 50 && testpunkte < 75){
+        //wenn das Ergebnis okay ist
+        else if(testpunkte >= 50 && testpunkte < 75)
+        {
                 Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/Daumen_quer.jpg");
                 ImageView imageViewrunter = new ImageView();
                 imageViewrunter.setImage(imagerunter);
@@ -357,6 +362,7 @@ public class Main extends Application {
                 Ergebnisauswertung.setCenter(grid);
         }//End else if
 
+        //wenn das Ergebnis okay ist
         else if(testpunkte >= 25 && testpunkte < 50){
             Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/Daumen_quer.jpg");
             ImageView imageViewrunter = new ImageView();
@@ -374,6 +380,7 @@ public class Main extends Application {
             Ergebnisauswertung.setCenter(grid);
         }//End else if
 
+        //wenn das Ergebnis schlecht ist
         else if(testpunkte >= 0 && testpunkte < 25){
             Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/daumenrot.png");
             ImageView imageViewrunter = new ImageView();
@@ -390,11 +397,6 @@ public class Main extends Application {
             grid.add(bewertungstext, 2, 2);
             Ergebnisauswertung.setCenter(grid);
         }//End else if
-
-        else {
-
-        }
-
 
 
         //disclaimer Text
@@ -414,6 +416,7 @@ public class Main extends Application {
         grid.add(zeigeRangliste, 2, 4);
         Ergebnisauswertung.setCenter(grid);
 
+        //ranglistenscreen anzeigen
         zeigeRangliste.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -421,6 +424,8 @@ public class Main extends Application {
                 root.setCenter(RanglisteScreen);
             }
         });
+
+        //benutzer und seinen score zur Rangliste hinzufügen
         hm2.addScore(nickname, score);
 
         return Ergebnisauswertung;
@@ -432,6 +437,7 @@ public class Main extends Application {
     public BorderPane fillPaneWithRanglistenScreenComponents(){
         final BorderPane RanglisteScreen = new BorderPane();
 
+        //grid erstellen
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -444,12 +450,13 @@ public class Main extends Application {
         grid.add(dieBestenz, 1, 1);
         RanglisteScreen.setCenter(grid);
 
-
+        //Rangliste anzeigen
         final Label dieBesten = new Label(hm2.getHighscoreString());
         dieBesten.setFont(Font.font("Tahoma", FontWeight.NORMAL, 30));
         grid.add(dieBesten, 1, 3);
         RanglisteScreen.setCenter(grid);
 
+        //Rangliste schließen
         Button Ranglisteweg = createButton("OK");
         HBox zrBtn = new HBox(30);
         zrBtn.setAlignment(Pos.BOTTOM_CENTER);
@@ -469,6 +476,7 @@ public class Main extends Application {
     }
 
 
+    //Caros createButton Methode
     public Button createButton(String text){
 
         Button button = new Button();
