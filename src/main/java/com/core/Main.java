@@ -29,6 +29,13 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import javax.swing.border.Border;
+import java.io.File;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by siefker on 04.11.2015.
@@ -38,7 +45,7 @@ public class Main extends Application {
     public static String nickname;
 
     BorderPane root = new BorderPane();
-    final HighscoreManager hm2 = new HighscoreManager();
+    static final HighscoreManager hm2 = new HighscoreManager();
     public int score;
 
     BorderPane RegisterScreen = fillPaneWithRegisterScreenComponents();
@@ -52,6 +59,7 @@ public class Main extends Application {
     BorderPane RanglisteScreen = fillPaneWithRanglistenScreenComponents();
 
     public static void main(String args[]) {
+        hm2.deleteScore();
         launch(args);
     }
 
@@ -472,8 +480,10 @@ public class Main extends Application {
             }
         });
 
+
         return RanglisteScreen;
     }
+
 
 
     //Caros createButton Methode
@@ -487,4 +497,8 @@ public class Main extends Application {
         return button;
 
     }
-}
+
+
+    }//End class
+
+

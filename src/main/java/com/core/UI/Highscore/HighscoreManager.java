@@ -6,6 +6,7 @@ package com.core.UI.Highscore;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 public class HighscoreManager {
     //arraylist des Typs "score" um mit den scores in der Klasse zu arbeiten
@@ -123,6 +124,27 @@ public class HighscoreManager {
             i++;
         }
         return highscoreString;
+    }
+
+
+    public void deleteScore() {
+        try {
+
+            File file = new File("file:score.dat");
+
+            long diff = new Date().getTime() - file.lastModified();
+
+            if (diff > 7 * 60 * 60 * 1000) {
+                file.delete();
+                System.out.print("Score got deleted");
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
     }
 
 }//End class
