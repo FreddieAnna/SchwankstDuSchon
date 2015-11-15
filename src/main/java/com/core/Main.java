@@ -1,7 +1,6 @@
 package com.core;
 
 import com.core.UI.Highscore.HighscoreManager;
-import com.core.UI.Highscore.Score;
 import com.core.UI.WebcamManager;
 import com.github.sarxos.webcam.Webcam;
 import javafx.application.Application;
@@ -14,7 +13,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,15 +25,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-import javax.swing.border.Border;
-import java.io.File;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by siefker on 04.11.2015.
@@ -102,8 +91,7 @@ public class Main extends Application {
         grid.add(reBtn, 1, 2);
 
         //damit man einen nicknamen angeben muss
-        register.disableProperty().bind(
-                Bindings.isEmpty(userNickname.textProperty()));
+        register.disableProperty().bind(Bindings.isEmpty(userNickname.textProperty()));
 
         final Label dieBesten3L = new Label("Die Besten 3:");
         grid.add(dieBesten3L, 0, 4);
