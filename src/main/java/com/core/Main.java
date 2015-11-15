@@ -7,6 +7,7 @@ import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -75,6 +76,7 @@ public class Main extends Application {
     BorderPane ergebnisauswertung = fillPaneWithErgebnisauswertungComponents();
     BorderPane ranglisteScreen = fillPaneWithRanglistenScreenComponents();
     BorderPane pickedCorrectAnswerScreen = fillPaneWithCorrectAnswerScreenComponents();
+    BorderPane pickedCorrectAnswerScreenBalanceTest = fillPaneWithCorrectAnswerScreenComponentsBalanceTest();
     BorderPane pickedWrongAnswerScreen = fillPaneWithWrongAnswerScreenComponents();
     BorderPane warningScreen = fillPaneWithWarningScreenComponents();
 
@@ -144,22 +146,8 @@ public class Main extends Application {
         disclaimer.setText("  \n \n \n \n");
         grid.add(disclaimer, 15, 15);
 
-
-        final Text actiontarget = new Text();
-        grid.add(actiontarget, 1, 3);
-
-        register.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                actiontarget.setFill(Color.FIREBRICK);
-                actiontarget.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
-                actiontarget.setText("Registriert");
-                nickname = userNickname.getText();
-            }
-        });
-
-
-        Button teststarten = createButton("Test starten");
+        final Button teststarten = createButton("Test starten");
+        teststarten.setDisable(true);
         HBox tsBtn = new HBox(50);
         tsBtn.setAlignment(Pos.BOTTOM_RIGHT);
         tsBtn.getChildren().add(teststarten);
@@ -171,12 +159,33 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 root.getChildren().remove(RegisterScreen);
                 switch (webcamTestRandomizer) {
-                    case(0): initiateCircleTest(); break;
-                    case(1): initiatePictureTest(); break;
-                    case(2): initiateBalanceTest(); break;
+                    case (0):
+                        initiateCircleTest();
+                        break;
+                    case (1):
+                        initiatePictureTest();
+                        break;
+                    case (2):
+                        initiateBalanceTest();
+                        break;
                 }
             }
         });
+
+        final Text actiontarget = new Text();
+        grid.add(actiontarget, 1, 3);
+
+        register.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                actiontarget.setFill(Color.FIREBRICK);
+                actiontarget.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
+                actiontarget.setText("Registriert");
+                nickname = userNickname.getText();
+                teststarten.setDisable(false);
+            }
+        });
+
         RegisterScreen.setCenter(grid);
         return RegisterScreen;
     }
@@ -210,7 +219,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(10000);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -319,8 +328,8 @@ public class Main extends Application {
                                                     switch (webcamTestRandomizer) {
                                                         case(0): initiatePictureTest(); break;
                                                         case(1): switch (mouseTestRandomizer) {
-                                                            case(0): initiateClockTestPhase1(); break;
-                                                            case(1): initiateCalculateTestPhase1(); break;
+                                                            case(0): initiateClockTest(); break;
+                                                            case(1): initiateCalculateTest(); break;
                                                         } break;
                                                         case(2): initiatePictureTest(); break;
                                                     }
@@ -382,8 +391,8 @@ public class Main extends Application {
                                                     switch (webcamTestRandomizer) {
                                                         case(0): initiatePictureTest(); break;
                                                         case(1): switch (mouseTestRandomizer) {
-                                                            case(0): initiateClockTestPhase1(); break;
-                                                            case(1): initiateCalculateTestPhase1(); break;
+                                                            case(0): initiateClockTest(); break;
+                                                            case(1): initiateCalculateTest(); break;
                                                         } break;
                                                         case(2): initiatePictureTest(); break;
                                                     }
@@ -497,7 +506,11 @@ public class Main extends Application {
         hBox.setMaxWidth(568);
         hBox.getChildren().add(imageView);
 
-        webcamTest2InformationScreen.setTop(text);
+        HBox hBoxText = new HBox();
+        hBoxText.setAlignment(Pos.CENTER);
+        hBoxText.getChildren().add(text);
+
+        webcamTest2InformationScreen.setTop(hBoxText);
         webcamTest2InformationScreen.setCenter(hBox);
 
         return webcamTest2InformationScreen;
@@ -551,7 +564,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -652,8 +665,8 @@ public class Main extends Application {
                                                                     case(0): initiateBalanceTest(); break;
                                                                     case(1): initiateBalanceTest(); break;
                                                                     case(2): switch (mouseTestRandomizer) {
-                                                                        case(0): initiateClockTestPhase1(); break;
-                                                                        case(1): initiateCalculateTestPhase1(); break;
+                                                                        case(0): initiateClockTest(); break;
+                                                                        case(1): initiateCalculateTest(); break;
                                                                     } break;
                                                                 }
                                                             }
@@ -778,7 +791,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -834,13 +847,13 @@ public class Main extends Application {
                         if (detectedMotion) {
 
                             root.getChildren().remove(webcamTestThreeScreen);
-                            root.setCenter(pickedCorrectAnswerScreen);
+                            root.setCenter(pickedCorrectAnswerScreenBalanceTest);
 
                             Runnable r = new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
-                                        Thread.sleep(1500);
+                                        Thread.sleep(5000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -879,8 +892,8 @@ public class Main extends Application {
                                             root.getChildren().remove(pickedWrongAnswerScreen);
                                             switch (webcamTestRandomizer) {
                                                 case(0): switch (mouseTestRandomizer) {
-                                                    case(0): initiateClockTestPhase1(); break;
-                                                    case(1): initiateCalculateTestPhase1(); break;
+                                                    case(0): initiateClockTest(); break;
+                                                    case(1): initiateCalculateTest(); break;
 
                                                 } break;
                                                 case(1): initiateCircleTest(); break;
@@ -954,8 +967,8 @@ public class Main extends Application {
                                             root.getChildren().remove(pickedWrongAnswerScreen);
                                             switch (webcamTestRandomizer) {
                                                 case(0): switch (mouseTestRandomizer) {
-                                                    case(0): initiateClockTestPhase1(); break;
-                                                    case(1): initiateCalculateTestPhase1(); break;
+                                                    case(0): initiateClockTest(); break;
+                                                    case(1): initiateCalculateTest(); break;
 
                                                 } break;
                                                 case(1): initiateCircleTest(); break;
@@ -988,8 +1001,8 @@ public class Main extends Application {
                                             root.getChildren().remove(pickedCorrectAnswerScreen);
                                             switch (webcamTestRandomizer) {
                                                 case(0): switch (mouseTestRandomizer) {
-                                                    case(0): initiateClockTestPhase1(); break;
-                                                    case(1): initiateCalculateTestPhase1(); break;
+                                                    case(0): initiateClockTest(); break;
+                                                    case(1): initiateCalculateTest(); break;
 
                                                 } break;
                                                 case(1): initiateCircleTest(); break;
@@ -1010,6 +1023,31 @@ public class Main extends Application {
         new Thread(r).start();
     }
 
+    private void initiateClockTest() {
+
+        root.setCenter(explanationClockTest);
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        root.getChildren().remove(explanationClockTest);
+                        initiateCalculateTestPhase1();
+                    }
+                });
+            }
+        };
+
+        new Thread(r).start();
+    }
+
     /**
      * Startet die erste Uhr
      */
@@ -1017,7 +1055,7 @@ public class Main extends Application {
 
         root.setCenter(clockTestClock1);
 
-        // Timer von 5 Sekunden bevor der Bildschirm zur zweiten Uhr wechselt
+        // Timer von 10 Sekunden bevor der Bildschirm zur zweiten Uhr wechselt
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -1090,7 +1128,7 @@ public class Main extends Application {
                         root.getChildren().remove(clockTestClock3);
                         switch (mouseTestRandomizer) {
                             case(0): initiateCalculateTestPhase1(); break;
-                            case(1): root.setCenter(ergebnisauswertung);
+                            case(1): hm2.addScore(nickname, score); root.setCenter(ergebnisauswertung);
                         }
                     }
                 });
@@ -1151,7 +1189,7 @@ public class Main extends Application {
                     public void run() {
                         root.getChildren().remove(calculateTestCalculate2);
                         switch (mouseTestRandomizer) {
-                            case(0): root.setCenter(ergebnisauswertung); break;
+                            case(0): hm2.addScore(nickname, score); root.setCenter(ergebnisauswertung); break;
                             case(1): initiateClockTestPhase1();
                         }
                     }
@@ -1415,6 +1453,31 @@ public class Main extends Application {
         return explanationCalculateTest;
     }
 
+    private void initiateCalculateTest() {
+
+        root.setCenter(explanationCalculateTest);
+
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        root.getChildren().remove(explanationCalculateTest);
+                        initiateCalculateTestPhase1();
+                    }
+                });
+            }
+        };
+
+        new Thread(r).start();
+    }
+
     /**
      * Platziert die Elemente für den ersten Durchlauf des Rechentests
      *
@@ -1547,110 +1610,121 @@ public class Main extends Application {
     /**
      * Thomas Klaus; Auswertung des Ergebnis
      */
-    public BorderPane fillPaneWithErgebnisauswertungComponents() {
+    private BorderPane fillPaneWithErgebnisauswertungComponents() {
         final BorderPane Ergebnisauswertung = new BorderPane();
 
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(5, 5, 5, 5));
 
-        //wenn das Ergebnis gut ist und der Nutzer fahrtüchtig ist
-        if(score >= 75){   //score hierhin
-            Image imagehoch = new Image("file:src/main/java/com/core/UI/Graphics/handgruen.png");
-            ImageView imageViewhoch = new ImageView();
-            imageViewhoch.setImage(imagehoch);
 
-            HBox hBox = new HBox();
-            hBox.getChildren().add(imageViewhoch);
-            grid.add(imageViewhoch, 2, 3);
-            Ergebnisauswertung.setCenter(grid);
-
-            final Label bewertungstext = new Label("Du hast den Test gut absolviert! \nDu bist nüchtern und" +
-                    "kannst Autofahren oder dich nun betrinken");
-            bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
-            bewertungstext.setAlignment(Pos.TOP_CENTER);
-            grid.add(bewertungstext, 2, 2);
-            Ergebnisauswertung.setCenter(grid);
-        }//End if
-
-        else if(score >= 50 && score < 75){
-            Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/Daumen_quer.jpg");
-            ImageView imageViewrunter = new ImageView();
-            imageViewrunter.setImage(imagerunter);
-
-            HBox hBox = new HBox();
-            hBox.getChildren().add(imageViewrunter);
-            grid.add(imageViewrunter, 2, 3);
-            Ergebnisauswertung.setCenter(grid);
-
-            final Label bewertungstext = new Label("Du bist angetrunken. An deiner Stelle würde ich \nnicht mehr fahren");
-            bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
-            bewertungstext.setAlignment(Pos.TOP_CENTER);
-            grid.add(bewertungstext, 2, 2);
-            Ergebnisauswertung.setCenter(grid);
-        }//End else if
-
-        else if(score >= 25 && score < 50){
-            Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/Daumen_quer.jpg");
-            ImageView imageViewrunter = new ImageView();
-            imageViewrunter.setImage(imagerunter);
-
-            HBox hBox = new HBox();
-            hBox.getChildren().add(imageViewrunter);
-            grid.add(imageViewrunter, 2, 3);
-            Ergebnisauswertung.setCenter(grid);
-
-            final Label bewertungstext = new Label("Eindeutig betrunken! Auf keinen Fall mehr Auto fahren");
-            bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
-            bewertungstext.setAlignment(Pos.TOP_CENTER);
-            grid.add(bewertungstext, 2, 2);
-            Ergebnisauswertung.setCenter(grid);
-        }//End else if
-
-        else if(score >= 0 && score < 25){
-            Image imagerunter = new Image("file:src/main/java/com/core/UI/Graphics/daumenrot.png");
-            ImageView imageViewrunter = new ImageView();
-            imageViewrunter.setImage(imagerunter);
-
-            HBox hBox = new HBox();
-            hBox.getChildren().add(imageViewrunter);
-            grid.add(imageViewrunter, 2, 3);
-            Ergebnisauswertung.setCenter(grid);
-
-            final Label bewertungstext = new Label("Du bist sturzbetrunken! Gehe dich ausnüchtern und \nversuche es dann nochmal");
-            bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
-            bewertungstext.setAlignment(Pos.TOP_CENTER);
-            grid.add(bewertungstext, 2, 2);
-            Ergebnisauswertung.setCenter(grid);
-        }//End else if
-
-        //disclaimer Text
-        Text disclaimer = new Text();
-        disclaimer.setFont(Font.font("Tahoma", FontWeight.NORMAL, 9));
-        disclaimer.setText("Das Institut für Suchtmittelaufklärung übernimmt keinerlei Gewähr \n" +
-                "für die Verbindlichkeit der Aussagen zur Fahrtüchtikkeit. \n" +
-                "Diese Software ist keine medizinische Software und macht daher \n" +
-                "keine verbindlichen Aussagen zum Alkoholpegel des Nutzers");
-        grid.add(disclaimer, 5, 5);
-
-        //Button zum RanglistenScreen
-        Button zeigeRangliste = createButton("Rangliste anzeigen");
-        HBox zrBtn = new HBox(30);
-        zrBtn.setAlignment(Pos.BOTTOM_CENTER);
-        zrBtn.getChildren().add(zeigeRangliste);
-        grid.add(zeigeRangliste, 2, 4);
-        Ergebnisauswertung.setCenter(grid);
-
-        zeigeRangliste.setOnAction(new EventHandler<ActionEvent>() {
+        Button ergebnisButton = createButton("Zeig mir mein Ergebnis!");
+        ergebnisButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-                root.getChildren().remove(Ergebnisauswertung);
-                root.setCenter(ranglisteScreen);
+            public void handle(ActionEvent actionEvent) {
+                Ergebnisauswertung.getChildren().clear();
+
+                GridPane grid = new GridPane();
+                grid.setAlignment(Pos.CENTER);
+                grid.setHgap(10);
+                grid.setVgap(10);
+                grid.setPadding(new Insets(5, 5, 5, 5));
+
+                //wenn das Ergebnis gut ist und der Nutzer fahrtüchtig ist
+                if(score >= 75){   //score hierhin
+                    Image imagehoch = new Image("file:img/handgruen.png");
+                    ImageView imageViewhoch = new ImageView();
+                    imageViewhoch.setImage(imagehoch);
+
+                    HBox hBox = new HBox();
+                    hBox.getChildren().add(imageViewhoch);
+                    grid.add(imageViewhoch, 2, 3);
+                    Ergebnisauswertung.setCenter(grid);
+
+                    final Label bewertungstext = new Label("Du hast den Test gut absolviert! \nDu bist nüchtern und" +
+                            "kannst Autofahren oder dich nun betrinken");
+                    bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
+                    bewertungstext.setAlignment(Pos.TOP_CENTER);
+                    grid.add(bewertungstext, 2, 2);
+                    Ergebnisauswertung.setCenter(grid);
+                }//End if
+
+                else if(score >= 50 && score < 75){
+                    Image imagerunter = new Image("file:img/Daumen_quer.jpg");
+                    ImageView imageViewrunter = new ImageView();
+                    imageViewrunter.setImage(imagerunter);
+
+                    HBox hBox = new HBox();
+                    hBox.getChildren().add(imageViewrunter);
+                    grid.add(imageViewrunter, 2, 3);
+                    Ergebnisauswertung.setCenter(grid);
+
+                    final Label bewertungstext = new Label("Du bist angetrunken. An deiner Stelle würde ich \nnicht mehr fahren");
+                    bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
+                    bewertungstext.setAlignment(Pos.TOP_CENTER);
+                    grid.add(bewertungstext, 2, 2);
+                    Ergebnisauswertung.setCenter(grid);
+                }//End else if
+
+                else if(score >= 25 && score < 50){
+                    Image imagerunter = new Image("file:img/Daumen_quer.jpg");
+                    ImageView imageViewrunter = new ImageView();
+                    imageViewrunter.setImage(imagerunter);
+
+                    HBox hBox = new HBox();
+                    hBox.getChildren().add(imageViewrunter);
+                    grid.add(imageViewrunter, 2, 3);
+                    Ergebnisauswertung.setCenter(grid);
+
+                    final Label bewertungstext = new Label("Eindeutig betrunken! Auf keinen Fall mehr Auto fahren");
+                    bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
+                    bewertungstext.setAlignment(Pos.TOP_CENTER);
+                    grid.add(bewertungstext, 2, 2);
+                    Ergebnisauswertung.setCenter(grid);
+                }//End else if
+
+                else if(score >= 0 && score < 25){
+                    Image imagerunter = new Image("file:img/daumenrot.png");
+                    ImageView imageViewrunter = new ImageView();
+                    imageViewrunter.setImage(imagerunter);
+
+                    HBox hBox = new HBox();
+                    hBox.getChildren().add(imageViewrunter);
+                    grid.add(imageViewrunter, 2, 3);
+                    Ergebnisauswertung.setCenter(grid);
+
+                    final Label bewertungstext = new Label("Du bist sturzbetrunken! Gehe dich ausnüchtern und \nversuche es dann nochmal");
+                    bewertungstext.setFont(Font.font("Tahoma", FontWeight.NORMAL, 35));
+                    bewertungstext.setAlignment(Pos.TOP_CENTER);
+                    grid.add(bewertungstext, 2, 2);
+                    Ergebnisauswertung.setCenter(grid);
+                }//End else if
+
+                //disclaimer Text
+                Text disclaimer = new Text();
+                disclaimer.setFont(Font.font("Tahoma", FontWeight.NORMAL, 9));
+                disclaimer.setText("Das Institut für Suchtmittelaufklärung übernimmt keinerlei Gewähr \n" +
+                        "für die Verbindlichkeit der Aussagen zur Fahrtüchtikkeit. \n" +
+                        "Diese Software ist keine medizinische Software und macht daher \n" +
+                        "keine verbindlichen Aussagen zum Alkoholpegel des Nutzers");
+                grid.add(disclaimer, 5, 5);
+
+                //Button zum RanglistenScreen
+                Button zeigeRangliste = createButton("Rangliste anzeigen");
+                HBox zrBtn = new HBox(30);
+                zrBtn.setAlignment(Pos.BOTTOM_CENTER);
+                zrBtn.getChildren().add(zeigeRangliste);
+                grid.add(zeigeRangliste, 2, 4);
+                Ergebnisauswertung.setCenter(grid);
+
+                zeigeRangliste.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        root.getChildren().remove(Ergebnisauswertung);
+                        root.setCenter(ranglisteScreen);
+                    }
+                });
             }
         });
-        hm2.addScore(nickname, score);
+
+        Ergebnisauswertung.setCenter(ergebnisButton);
 
         return Ergebnisauswertung;
     }
@@ -1661,40 +1735,51 @@ public class Main extends Application {
     public BorderPane fillPaneWithRanglistenScreenComponents() {
         final BorderPane RanglisteScreen = new BorderPane();
 
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(5, 5, 5, 5));
-
-        final Label dieBestenz = new Label("Rangliste:");
-        dieBestenz.setFont(Font.font("Tahoma", FontWeight.NORMAL, 45));
-        dieBestenz.setAlignment(Pos.TOP_CENTER);
-        grid.add(dieBestenz, 1, 1);
-        RanglisteScreen.setCenter(grid);
-
-
-        final Label dieBesten = new Label(hm2.getHighscoreString());
-        dieBesten.setFont(Font.font("Tahoma", FontWeight.NORMAL, 30));
-        grid.add(dieBesten, 1, 3);
-        RanglisteScreen.setCenter(grid);
-
-        Button Ranglisteweg = createButton("OK");
-        HBox zrBtn = new HBox(30);
-        zrBtn.setAlignment(Pos.BOTTOM_CENTER);
-        zrBtn.getChildren().add(Ranglisteweg);
-        grid.add(Ranglisteweg, 5, 5);
-        RanglisteScreen.setCenter(grid);
-
-        Ranglisteweg.setOnAction(new EventHandler<ActionEvent>() {
+        Button rankingButton = createButton("Zeig mir die Rangliste!");
+        rankingButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-                root.getChildren().remove(RanglisteScreen);
-                root.setCenter(registerScreen);
+            public void handle(ActionEvent actionEvent) {
 
-                score=0;
+                RanglisteScreen.getChildren().clear();
+
+                GridPane grid = new GridPane();
+                grid.setAlignment(Pos.CENTER);
+                grid.setHgap(10);
+                grid.setVgap(10);
+                grid.setPadding(new Insets(5, 5, 5, 5));
+
+                final Label dieBestenz = new Label("Rangliste:");
+                dieBestenz.setFont(Font.font("Tahoma", FontWeight.NORMAL, 45));
+                dieBestenz.setAlignment(Pos.TOP_CENTER);
+                grid.add(dieBestenz, 1, 1);
+                RanglisteScreen.setCenter(grid);
+
+
+                final Label dieBesten = new Label(hm2.getHighscoreString());
+                dieBesten.setFont(Font.font("Tahoma", FontWeight.NORMAL, 30));
+                grid.add(dieBesten, 1, 3);
+                RanglisteScreen.setCenter(grid);
+
+                Button Ranglisteweg = createButton("OK");
+                HBox zrBtn = new HBox(30);
+                zrBtn.setAlignment(Pos.BOTTOM_CENTER);
+                zrBtn.getChildren().add(Ranglisteweg);
+                grid.add(Ranglisteweg, 5, 5);
+                RanglisteScreen.setCenter(grid);
+
+                Ranglisteweg.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        root.getChildren().remove(RanglisteScreen);
+                        root.setCenter(registerScreen);
+
+                        score=0;
+                    }
+                });
             }
         });
+
+        RanglisteScreen.setCenter(rankingButton);
 
         return RanglisteScreen;
     }
@@ -1707,6 +1792,20 @@ public class Main extends Application {
         text.setFont(new Font(150));
         text.setTextAlignment(TextAlignment.CENTER);
         text.setText("Sehr gut!");
+
+        correctAnswerScreen.setCenter(text);
+
+        return correctAnswerScreen;
+    }
+
+    private BorderPane fillPaneWithCorrectAnswerScreenComponentsBalanceTest() {
+
+        BorderPane correctAnswerScreen = new BorderPane();
+
+        Text text = new Text();
+        text.setFont(new Font(90));
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setText("Sehr gut!\nBleibe 10 Sekunden so stehen!");
 
         correctAnswerScreen.setCenter(text);
 
