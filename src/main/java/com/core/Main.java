@@ -33,6 +33,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Objects;
 
 /**
  * Created by siefker on 04.11.2015.
@@ -80,7 +83,8 @@ public class Main extends Application {
     BorderPane pickedWrongAnswerScreen = fillPaneWithWrongAnswerScreenComponents();
     BorderPane warningScreen = fillPaneWithWarningScreenComponents();
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        
         launch(args);
     }
 
@@ -102,7 +106,8 @@ public class Main extends Application {
     /**
      * Thomas Klaus; Registrierungsscreen anzeigen
      */
-    public BorderPane fillPaneWithRegisterScreenComponents() {
+    private BorderPane fillPaneWithRegisterScreenComponents() {
+
         final BorderPane RegisterScreen = new BorderPane();
 
         GridPane grid = new GridPane();
@@ -528,7 +533,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -564,7 +569,7 @@ public class Main extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -1039,7 +1044,7 @@ public class Main extends Application {
                     @Override
                     public void run() {
                         root.getChildren().remove(explanationClockTest);
-                        initiateCalculateTestPhase1();
+                        initiateClockTestPhase1();
                     }
                 });
             }
